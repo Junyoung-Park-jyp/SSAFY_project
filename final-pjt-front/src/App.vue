@@ -1,8 +1,8 @@
 <script setup>
-import { useArticleStore } from '@/stores/articles'
+import { useProductStore } from '@/stores/products'
 import { RouterLink, RouterView } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
-const store = useArticleStore()
+const store = useProductStore()
 const isLogin = computed(() => store.isLogin)
 
 </script>

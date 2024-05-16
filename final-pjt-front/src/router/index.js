@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ArticleCreateView from '../views/ArticleCreateView.vue'
+import ProductCreateView from '../views/ProductCreateView.vue'
 import LogInView from '../views/LogInView.vue'
 import SignUpView from '../views/SignUpView.vue'
-import { useArticleStore } from '@/stores/articles'
+import { useProductStore } from '@/stores/products'
 
 
 const router = createRouter({
@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: '/create',
       name: 'create',
-      component: ArticleCreateView
+      component: ProductCreateView
     },
     {
       path: '/signup',
@@ -33,7 +33,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const store = useArticleStore()
+  const store = useProductStore()
   if (to.name === 'home' && !store.isLogin) {
     window.alert('로그인이 필요합니다.')
     return { name: 'login' }
