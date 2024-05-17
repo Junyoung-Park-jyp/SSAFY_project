@@ -47,20 +47,6 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  const UserInfo = function(payload){
-    const age = payload.age
-    const current_balance = payload.current_balance
-    const bank = payload.bank
-    const annual_salary = payload.annual_salary
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8000/accounts/userinfo/',
-      data: {
-        age, current_balance, bank, annual_salary
-      }
-    })
-  }
-
   const LogIn = async (payload) => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload)
