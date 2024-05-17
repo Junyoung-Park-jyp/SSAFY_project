@@ -12,3 +12,10 @@ class UserInfoSerializer(serializers.ModelSerializer):
         model = UserInfo
         fields = '__all__'
         read_only_fields = ['user']
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = '__all__'
+        read_only_fields = ['user']

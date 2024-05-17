@@ -47,35 +47,41 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  const LogIn = function(payload){
-    const username = payload.username
-    const password = payload.password
+  const UserInfo = function(payload){
+    const age = payload.age
+    const current_balance = payload.current_balance
+    const bank = payload.bank
+    const annual_salary = payload.annual_salary
     axios({
       method: 'post',
-      url: `http://127.0.0.1:8000/accounts/login/`,
-      data : {
-        username, password
+      url: 'http://127.0.0.1:8000/accounts/userinfo/',
+      data: {
+        age, current_balance, bank, annual_salary
       }
     })
-    .then((res)=> {
-      console.log('login')
-      token.value = res.data.key
-      router.push({ name: 'home' })
-    })
-    .catch(err => console.log(err))
   }
 
-  const getProfile = function(payload){
-    const username = payload.username
+  const LogIn = async (payload) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload)
+      console.log('login', response.data)
+      token.value = response.data.key
+      router.push({ name: 'profile' })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/accounts/profile/${username}`,
-    })
-    .then((res) => {
-      console.log(res.data)
-    })
-    .catch(err => console.log(err))
+  const getProfile = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/v1/accounts/profile/', {
+        headers: { Authorization: `Token ${token.value}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+      return null
+    }
   }
 
   return { SignUp, UserInfo, LogIn, getProfile, token, isLogin }

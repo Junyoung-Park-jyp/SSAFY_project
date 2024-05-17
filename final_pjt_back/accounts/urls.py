@@ -6,3 +6,4 @@ urlpatterns = [
     path('profile/update/', update_user_profile, name='update-user-profile'),
     path('userinfo/', user_info, name='user-info')
 ]
+    
