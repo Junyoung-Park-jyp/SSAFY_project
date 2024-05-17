@@ -7,59 +7,40 @@ export const useUserStore = defineStore('user', () => {
   const router = useRouter()
   const token = ref(null)
   const isLogin = computed(() => {
-    if (token.value === null) {
-      return false
-    } else {
-      return true
-    }
+    return token.value !== null
   })
-  const SignUp = function(payload){
-    const username = payload.username
-    const password1 = payload.password1
-    const password2 = payload.password2
-    axios({
-      method: 'post',
-      url: `http://127.0.0.1:8000/accounts/signup/`,
-      data : {
-        username, password1, password2
-      }
-    })
-    .then((res) => {
-      console.log('회원가입 완료')
-      router.push({ name: 'home' })
-    })
-    .catch(err => console.log(err))
+
+  const SignUp = async (payload) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/accounts/signup/', payload)
+      console.log('회원가입 완료', response.data)
+      router.push({ name: 'login' })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  const LogIn = function(payload){
-    const username = payload.username
-    const password = payload.password
-    axios({
-      method: 'post',
-      url: `http://127.0.0.1:8000/accounts/login/`,
-      data : {
-        username, password
-      }
-    })
-    .then((res)=> {
-      console.log('login')
-      token.value = res.data.key
-      router.push({ name: 'home' })
-    })
-    .catch(err => console.log(err))
+  const LogIn = async (payload) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload)
+      console.log('login', response.data)
+      token.value = response.data.key
+      router.push({ name: 'profile' })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  const getProfile = function(payload){
-    const username = payload.username
-
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/accounts/profile/${username}`,
-    })
-    .then((res) => {
-      console.log(res.data)
-    })
-    .catch(err => console.log(err))
+  const getProfile = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/v1/accounts/profile/', {
+        headers: { Authorization: `Token ${token.value}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+      return null
+    }
   }
 
   return { SignUp, LogIn, getProfile, token, isLogin }

@@ -1,39 +1,45 @@
 <template>
-    <div>
-      <h1>적금 상세</h1>
-      <div v-if="deposit">
-        <p>이름: {{ deposit.name }}</p>
-        <p>금리: {{ deposit.interest_rate }}%</p>
-        <!-- 추가 정보 표시 -->
-      </div>
-    </div>
-  </template>
-  
-  <script>
-  import { useProductStore } from '@/stores/products'
-  
-  export default {
-    data() {
-      return {
-        deposit: null
-      }
-    },
-    methods: {
-      fetchDepositDetail() {
-        const productStore = useProductStore()
-        const id = this.$route.params.id
-        axios.get(`http://127.0.0.1:8000/api/v1/products/depositproducts/${id}/`)
-          .then(response => {
-            this.deposit = response.data
-          })
-          .catch(error => {
-            console.error(error)
-          })
-      }
-    },
-    mounted() {
-      this.fetchDepositDetail()
-    }
+  <div v-if="depositDetail">
+    <h1>{{ depositDetail.fin_prdt_nm }}</h1>
+    <p>은행: {{ depositDetail.kor_co_nm }}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>가입 기간</th>
+          <th>금리</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="option in depositDetail.options" :key="option.save_trm">
+          <td>{{ option.save_trm }}개월</td>
+          <td>{{ option.intr_rate }}%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>특이사항: {{ depositDetail.etc_note }}</p>
+  </div>
+  <div v-else>
+    <p>Loading...</p>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useProductStore } from '@/stores/products';
+
+export default {
+  setup() {
+    const route = useRoute();
+    const productStore = useProductStore();
+    const depositDetail = ref(null);
+
+    onMounted(() => {
+      const id = route.params.id;
+      depositDetail.value = productStore.deposits.find(deposit => deposit.id === Number(id));
+    });
+
+    return { depositDetail };
   }
-  </script>
-  
+};
+</script>
