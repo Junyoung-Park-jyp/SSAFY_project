@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import ProductCreateView from '../views/ProductCreateView.vue'
 import LogInView from '../views/LogInView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import ProfileView from '../views/ProfileView.vue'
@@ -10,6 +11,7 @@ import SavingView from '../views/SavingView.vue'
 import SavingDetailView from '../views/SavingDetailView.vue'
 import CommunityView from '../views/CommunityView.vue'
 import { useUserStore } from '@/stores/users'
+import { useProductStore } from '@/stores/products'
 
 
 const router = createRouter({
@@ -43,6 +45,11 @@ const router = createRouter({
           component: ProfileView
         }
       ]
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: ProductCreateView
     },
     {
       path: '/community',
@@ -84,12 +91,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from) => {
-  const store = useUserStore()
-  if (to.name === 'home' && !store.isLogin) {
+  const userStore = useUserStore()
+  const productStore = useProductStore()
+  if (to.name === 'home' && !userStore.isLogin) {
     window.alert('로그인이 필요합니다.')
     return { name: 'login' }
   }
-  if ((to.name === 'signup' || to.name === 'login') && (store.isLogin)) {
+  if ((to.name === 'signup' || to.name === 'login') && (userStore.isLogin)) {
     window.alert('이미 로그인한 사용자입니다.')
     return { name: 'home' }
   }

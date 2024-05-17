@@ -3,6 +3,9 @@
     <h1>게시글 목록 페이지</h1>
     <DepositList />
     <SavingList />
+    <button @click="router.push({name: 'create'})">게시글 생성</button>
+    <BankSearchForm />
+    <ProductList />
   </div>
 </template>
 
@@ -10,9 +13,12 @@
 import { useRouter } from 'vue-router';
 import DepositList from '../components/DepositList.vue';
 import SavingList from '../components/SavingList.vue';
+import BankSearchForm from '../components/BankSearchForm.vue';
+import ProductList from '../components/ProductList.vue';
+
 const router = useRouter()
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+/* Add styles specific to this component */
 </style>
