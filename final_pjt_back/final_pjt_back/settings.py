@@ -79,6 +79,12 @@ REST_FRAMEWORK = {
     ],
 }
 
+# REST-AUTH 회원가입 기본 Serailizer 재정의
+REST_AUTH = {
+ 'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

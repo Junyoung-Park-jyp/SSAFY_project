@@ -8,3 +8,4 @@ class User(AbstractUser):
     deposit_products = models.ManyToManyField(DepositProducts, blank=True, related_name='users')
     bank = models.CharField(max_length=20)
     age = models.IntegerField(null=True, blank=True, default=20)
+    email = models.EmailField(unique=True, null=True, blank=True)

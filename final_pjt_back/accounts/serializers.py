@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import User
-
+from dj_rest_auth.registration.serializers import RegisterSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,19 +9,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomRegisterSerializer(RegisterSerializer):
-    # 필요한 필드들을 추가합니다.
-    age = serializers.IntegerField(
-        required=False,
-        )
-    bank = serializers.CharField(
-        max_length=20,
-        required=True
-    )
-    # 해당 필드도 저장 시 함께 사용하도록 설정합니다.
+    age = serializers.IntegerField(required=False,)
+    bank = serializers.CharField(max_length=20, required=True)
+    email = serializers.EmailField(required=True)
     def get_cleaned_data(self):
         return {
         'username': self.validated_data.get('username', ''),
         'password1': self.validated_data.get('password1', ''),
-        # nickname 필드 추가
-        'nickname': self.validated_data.get('nickname', ''),
+        # age, bank 필드 추가
+        'age': self.validated_data.get('age', ''),
+        'bank': self.validated_data.get('bank', '')
         }
