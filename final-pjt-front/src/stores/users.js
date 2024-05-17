@@ -10,71 +10,37 @@ export const useUserStore = defineStore('user', () => {
     return token.value !== null
   })
 
-  const SignUp = function(payload) {
-    const { username, password1, password2 } = payload
-    axios.post('http://127.0.0.1:8000/accounts/signup/', {
-      username, password1, password2
-    })
-    .then(res => {
-      console.log('회원가입 완료')
-      router.push({ name: 'home' })
-    })
-    .catch(err => {
-      if (err.response) {
-        console.log('Response data:', err.response.data)
-        console.log('Response status:', err.response.status)
-        console.log('Response headers:', err.response.headers)
-      } else if (err.request) {
-        console.log('Request data:', err.request)
-      } else {
-        console.log('Error message:', err.message)
-      }
-      console.log('Error config:', err.config)
-    })
+  const SignUp = async (payload) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/accounts/signup/', payload)
+      console.log('회원가입 완료', response.data)
+      router.push({ name: 'login' })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  const LogIn = function(payload) {
-    const { username, password } = payload
-    axios.post('http://127.0.0.1:8000/accounts/login/', {
-      username, password
-    })
-    .then(res => {
-      console.log('login')
-      token.value = res.data.key
-      router.push({ name: 'home' })
-    })
-    .catch(err => {
-      if (err.response) {
-        console.log('Response data:', err.response.data)
-        console.log('Response status:', err.response.status)
-        console.log('Response headers:', err.response.headers)
-      } else if (err.request) {
-        console.log('Request data:', err.request)
-      } else {
-        console.log('Error message:', err.message)
-      }
-      console.log('Error config:', err.config)
-    })
+  const LogIn = async (payload) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload)
+      console.log('login', response.data)
+      token.value = response.data.key
+      router.push({ name: 'profile' })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  const getProfile = function(payload) {
-    const { username } = payload
-    axios.get(`http://127.0.0.1:8000/accounts/profile/${username}`)
-    .then(res => {
-      console.log(res.data)
-    })
-    .catch(err => {
-      if (err.response) {
-        console.log('Response data:', err.response.data)
-        console.log('Response status:', err.response.status)
-        console.log('Response headers:', err.response.headers)
-      } else if (err.request) {
-        console.log('Request data:', err.request)
-      } else {
-        console.log('Error message:', err.message)
-      }
-      console.log('Error config:', err.config)
-    })
+  const getProfile = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/v1/accounts/profile/', {
+        headers: { Authorization: `Token ${token.value}` }
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+      return null
+    }
   }
 
   return { SignUp, LogIn, getProfile, token, isLogin }
