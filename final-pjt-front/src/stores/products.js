@@ -35,9 +35,5 @@ export const useProductStore = defineStore('product', () => {
     })
   }
 
-  return { deposits, savings, getDeposits, getSavings, createProduct, SignUp, LogIn, token, isLogin }
+  return { deposits, savings, getDeposits, getSavings, createProduct, token, isLogin }
 }, { persist: true })
-import axios from 'axios'
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
