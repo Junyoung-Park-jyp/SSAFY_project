@@ -134,10 +134,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # REST-AUTH 회원가입 기본 Serailizer 재정의
-REST_AUTH = {
-    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
-}
-
 
 
 # Internationalization
