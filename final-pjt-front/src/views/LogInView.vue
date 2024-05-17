@@ -13,12 +13,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useArticleStore } from '@/stores/articles';
+import { useUserStore } from '@/stores/users';
 import { storeToRefs } from 'pinia';
 
 const username = ref(null)
 const password = ref(null)
-const store = useArticleStore()
+const store = useUserStore()
 const LogIn = function(){
   const payload = {
       username : username.value,

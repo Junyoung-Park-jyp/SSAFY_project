@@ -3,9 +3,8 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
-export const useArticleStore = defineStore('article', () => {
+export const useUserStore = defineStore('user', () => {
   const router = useRouter()
-  const articles = ref([])
   const token = ref(null)
   const isLogin = computed(() => {
     if (token.value === null) {
@@ -31,6 +30,7 @@ export const useArticleStore = defineStore('article', () => {
     })
     .catch(err => console.log(err))
   }
+
   const LogIn = function(payload){
     const username = payload.username
     const password = payload.password
@@ -48,33 +48,19 @@ export const useArticleStore = defineStore('article', () => {
     })
     .catch(err => console.log(err))
   }
-  const getArticles = function () {
+
+  const getProfile = function(payload){
+    const username = payload.username
+
     axios({
       method: 'get',
-      url: 'http://127.0.0.1:8000/api/v1/articles/',
-      headers: {
-        Authorization: `Token ${token.value}`
-      }
+      url: `http://127.0.0.1:8000/accounts/profile/${username}`,
     })
-    .then(res => articles.value = res.data)
+    .then((res) => {
+      console.log(res.data)
+    })
+    .catch(err => console.log(err))
   }
 
-  const createArticle = function ({ title, content}) {
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8000/api/v1/articles/',
-      data: {
-        title,
-        content
-      },
-      headers: {
-        Authorization: `Token ${token.value}`
-      }
-    })
-    .then((res) => {console.log(res)
-      router.push({name: 'home'})
-    })
-  }
-
-  return { articles, getArticles, createArticle, SignUp, LogIn, token, isLogin }
+  return { SignUp, LogIn, getProfile, token, isLogin }
 }, { persist: true })

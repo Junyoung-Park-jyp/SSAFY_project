@@ -1,14 +1,15 @@
 <template>
   <div>
     <h1>게시글 목록 페이지</h1>
-    <button @click="router.push({name: 'create'})">게시글 생성</button>
-    <ArticleList />
+    <DepositList />
+    <SavingList />
   </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
-import ArticleList from '../components/ArticleList.vue';
+import DepositList from '../components/DepositList.vue';
+import SavingList from '../components/SavingList.vue';
 const router = useRouter()
 </script>
 

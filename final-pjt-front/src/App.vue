@@ -1,9 +1,10 @@
 <script setup>
-import { useArticleStore } from '@/stores/articles'
+import { useProductStore } from '@/stores/products'
+import { useUserStore } from '@/stores/users'
 import { RouterLink, RouterView } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
-const store = useArticleStore()
-const isLogin = computed(() => store.isLogin)
+const userStore = useUserStore()
+const isLogin = computed(() => userStore.isLogin)
 
 </script>
 
@@ -14,6 +15,7 @@ const isLogin = computed(() => store.isLogin)
         <RouterLink to="/">Home</RouterLink> | 
         <RouterLink v-if="!isLogin" :to="{name: 'signup'}">Sign Up | </RouterLink>
         <RouterLink v-if="!isLogin" :to="{name: 'login'}">Log In | </RouterLink>
+        <RouterLink :to="{name: 'community'}">Community</RouterLink>
       </nav>
     </div>
   </header>

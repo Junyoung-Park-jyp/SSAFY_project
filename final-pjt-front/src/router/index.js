@@ -1,9 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ArticleCreateView from '../views/ArticleCreateView.vue'
 import LogInView from '../views/LogInView.vue'
 import SignUpView from '../views/SignUpView.vue'
-import { useArticleStore } from '@/stores/articles'
+import ProfileView from '../views/ProfileView.vue'
+import ProductView from '../views/ProductView.vue'
+import DepositView from '../views/DepositView.vue'
+import DepositDetailView from '../views/DepositDetailView.vue'
+import SavingView from '../views/SavingView.vue'
+import SavingDetailView from '../views/SavingDetailView.vue'
+import CommunityView from '../views/CommunityView.vue'
+import { useUserStore } from '@/stores/users'
 
 
 const router = createRouter({
@@ -15,25 +21,70 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/create',
-      name: 'create',
-      component: ArticleCreateView
+      path: '/accounts',
+      children: [
+        {
+          path: '/',
+          name: 'accounts',
+        },
+        {
+          path: '/accounts/signup',
+          name: 'signup',
+          component: SignUpView
+        },
+        {
+          path: '/accounts/login',
+          name: 'login',
+          component: LogInView
+        },
+        {
+          path: '/accounts/profile',
+          name: 'profile',
+          component: ProfileView
+        }
+      ]
     },
     {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpView
+      path: '/community',
+      name: 'community',
+      component: CommunityView
     },
     {
-      path: '/login',
-      name: 'login',
-      component: LogInView
-    },    
+      path: '/products',
+      name: 'products',
+      component: ProductView,
+      children: [
+        {
+          path: '/deposit',
+          name: 'deposit',
+          component: DepositView,
+          children: [
+            {
+              path: '/:id',
+              name: 'depositDetail',
+              component: DepositDetailView
+            }
+          ]
+        },
+        {
+          path: '/saving',
+          name: 'saving',
+          component: SavingView,
+          childeren: [
+            {
+              path: '/:id',
+              name: 'savingDetail',
+              component: SavingDetailView
+            }
+          ]
+        }
+      ]
+    }
   ]
 })
 
 router.beforeEach((to, from) => {
-  const store = useArticleStore()
+  const store = useUserStore()
   if (to.name === 'home' && !store.isLogin) {
     window.alert('로그인이 필요합니다.')
     return { name: 'login' }
