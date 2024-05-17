@@ -17,8 +17,8 @@
       <p>
         <label for="age">나이:</label>
         <input type="number" id="age" v-model.trim="age">
-        <label for="bank">이용하시는 은행을 고르세요.</label>
-        <select id="bank">
+        <label for="bank" >이용하시는 은행을 고르세요.</label>
+        <select id="bank" v-model="bank">
           <option value="우리은행">우리은행</option>
           <option value="신한은행">신한은행</option>
           <option value="하나은행">하나은행</option>
@@ -54,18 +54,26 @@ const password1 = ref(null)
 const password2 = ref(null)
 const age = ref(null)
 const bank = ref(null)
+const current_balance = ref(null)
+const annual_salary = ref(null)
 const store = useUserStore()
 const SignUp = function(){
   const payload = {
       username : username.value,
       password1 : password1.value,
       password2 : password2.value,
-      age : age.value,
-      bank : bank.value
     }
+  
+  const userInfo = {
+      age : age.value,
+      bank : bank.value,
+      current_balance : current_balance.value,
+      annual_salary: annual_salary.value
+  }
   console.log(bank.value)
   console.log(age.value)
   store.SignUp(payload)
+  store.UserInfo(userInfo)
 }
 
 

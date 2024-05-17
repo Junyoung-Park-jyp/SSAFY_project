@@ -35,6 +35,9 @@ const router = createRouter({
           component: SignUpView
         },
         {
+          path: '/accounts'
+        },
+        {
           path: '/accounts/login',
           name: 'login',
           component: LogInView

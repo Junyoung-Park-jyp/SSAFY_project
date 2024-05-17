@@ -27,10 +27,24 @@ export const useUserStore = defineStore('user', () => {
       }
     })
     .then((res) => {
-      console.log('회원가입 완료')
+      LogIn({username, password})
       router.push({ name: 'home' })
     })
     .catch(err => console.log(err))
+  }
+
+  const UserInfo = function(payload){
+    const age = payload.age
+    const current_balance = payload.current_balance
+    const bank = payload.bank
+    const annual_salary = payload.annual_salary
+    axios({
+      method: 'post',
+      url: 'http://127.0.0.1:8000/accounts/userinfo/',
+      data: {
+        age, current_balance, bank, annual_salary
+      }
+    })
   }
 
   const LogIn = function(payload){
@@ -64,5 +78,5 @@ export const useUserStore = defineStore('user', () => {
     .catch(err => console.log(err))
   }
 
-  return { SignUp, LogIn, getProfile, token, isLogin }
+  return { SignUp, UserInfo, LogIn, getProfile, token, isLogin }
 }, { persist: true })
