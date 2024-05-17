@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ACCOUNT_ADAPTER = 'accounts.models.CustomAccountAdapter'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -79,9 +81,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-# REST-AUTH 회원가입 기본 Serailizer 재정의
-REST_AUTH = {
- 'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'your_app_name.serializers.CustomRegisterSerializer',
 }
 
 
@@ -162,5 +163,3 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://localhost:5173',
 ]
-
-AUTH_USER_MODEL = 'accounts.User'
