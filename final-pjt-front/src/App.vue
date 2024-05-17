@@ -13,8 +13,12 @@ const isLogin = computed(() => userStore.isLogin)
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink> | 
-        <RouterLink v-if="!isLogin" :to="{name: 'signup'}">Sign Up | </RouterLink>
-        <RouterLink v-if="!isLogin" :to="{name: 'login'}">Log In | </RouterLink>
+        <RouterLink :to="{name: 'signup'}">Sign Up | </RouterLink>
+        <RouterLink :to="{name: 'login'}">Log In | </RouterLink>
+        <RouterLink :to="{name: 'community'}">community | </RouterLink>
+        <RouterLink :to="{name: 'products'}">products | </RouterLink>
+        <RouterLink :to="{name: 'create'}">create | </RouterLink>
+        <RouterLink :to="{name: 'accounts'}">accounts | </RouterLink>
         <RouterLink :to="{name: 'community'}">Community</RouterLink>
       </nav>
     </div>

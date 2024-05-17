@@ -2,12 +2,12 @@
   <div>
     <ul>
       <div
-        v-for="article in store.articles"
-        :key="article.pk"
+        v-for="deposit in store.deposits"
+        :key="deposit.id"
       >
-        <h3>{{ article.pk }}번 게시글</h3>
-        <p>제목 : {{ article.title }}</p>
-        <p>내용 : {{ article.content }}</p>
+        
+        <p>제목 : {{ deposit.etc_note }}</p>
+        <!-- <p>내용 : {{ article.content }}</p> -->
         <hr>
       </div>
     </ul>
@@ -16,14 +16,13 @@
 
 <script setup>
 import { onMounted } from 'vue';
-// import { useArticleStore } from '@/stores/articles'
-// const store = useArticleStore()
+import { useProductStore } from '@/stores/products'
+const store = useProductStore()
+console.log(store.deposits)
+console.log(store.savings)
 
-// onMounted(() => {
-//   store.getArticles()
-// })
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

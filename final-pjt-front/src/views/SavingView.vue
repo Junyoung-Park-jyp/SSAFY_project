@@ -1,13 +1,17 @@
 <template>
     <div>
-        <h1>적금 목록</h1>
+      <h1>예금 상품</h1>
+      <SavingList />
     </div>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-
-</style>
+  </template>
+  
+  <script>
+  import SavingList from '@/components/SavingList.vue'
+  
+  export default {
+    components: {
+      SavingList
+    }
+  }
+  </script>
+  

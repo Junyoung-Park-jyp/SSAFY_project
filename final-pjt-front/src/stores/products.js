@@ -25,7 +25,7 @@ export const useProductStore = defineStore('product', () => {
     .then(res => savings.value = res.data)
   }
 
-  const createProduct = function ({ title, content }) {
+  const createCommunity = function ({ title, content }) {
     axios.post('http://127.0.0.1:8000/api/v1/products/', { title, content }, {
       headers: { Authorization: `Token ${token.value}` }
     })
@@ -35,9 +35,5 @@ export const useProductStore = defineStore('product', () => {
     })
   }
 
-  return { deposits, savings, getDeposits, getSavings, createProduct, SignUp, LogIn, token, isLogin }
+  return { deposits, savings, getDeposits, getSavings, createCommunity, token, isLogin }
 }, { persist: true })
-import axios from 'axios'
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'

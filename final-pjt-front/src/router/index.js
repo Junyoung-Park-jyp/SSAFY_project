@@ -10,6 +10,7 @@ import DepositDetailView from '../views/DepositDetailView.vue'
 import SavingView from '../views/SavingView.vue'
 import SavingDetailView from '../views/SavingDetailView.vue'
 import CommunityView from '../views/CommunityView.vue'
+import CommunityCreateView from '../views/CommunityCreateView.vue'
 import { useUserStore } from '@/stores/users'
 import { useProductStore } from '@/stores/products'
 
@@ -49,7 +50,7 @@ const router = createRouter({
     {
       path: '/create',
       name: 'create',
-      component: ProductCreateView
+      component: CommunityCreateView
     },
     {
       path: '/community',

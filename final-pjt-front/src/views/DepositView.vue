@@ -1,13 +1,17 @@
 <template>
     <div>
-        <h1>예금 목록</h1>
+      <h1>적금 상품</h1>
+      <DepositList />
     </div>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-
-</style>
+  </template>
+  
+  <script>
+  import DepositList from '@/components/DepositList.vue'
+  
+  export default {
+    components: {
+      DepositList
+    }
+  }
+  </script>
+  

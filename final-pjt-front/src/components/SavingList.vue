@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <div
+      <!-- <div
         v-for="article in store.articles"
         :key="article.pk"
       >
@@ -9,7 +9,7 @@
         <p>제목 : {{ article.title }}</p>
         <p>내용 : {{ article.content }}</p>
         <hr>
-      </div>
+      </div> -->
     </ul>
   </div>
 </template>

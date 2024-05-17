@@ -1,24 +1,15 @@
 <template>
   <div>
-    <h1>게시글 목록 페이지</h1>
-    <DepositList />
-    <SavingList />
-    <button @click="router.push({name: 'create'})">게시글 생성</button>
-    <BankSearchForm />
-    <ProductList />
+    <h1>메인 페이지</h1>
+    <!-- 메인 페이지 컨텐츠 추가 -->
   </div>
 </template>
 
-<script setup>
-import { useRouter } from 'vue-router';
-import DepositList from '../components/DepositList.vue';
-import SavingList from '../components/SavingList.vue';
-import BankSearchForm from '../components/BankSearchForm.vue';
-import ProductList from '../components/ProductList.vue';
-
-const router = useRouter()
+<script>
+export default {
+  name: 'HomeView',
+  mounted() {
+    // 메인 페이지 초기 데이터 로드
+  }
+}
 </script>
-
-<style scoped>
-/* Add styles specific to this component */
-</style>

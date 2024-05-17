@@ -1,13 +1,17 @@
 <template>
     <div>
-        <h1>상품 메인 페이지</h1>
+      <h1>상품 리스트</h1>
+      <ProductList />
     </div>
-</template>
-
-<script setup>
-
-</script>
-
-<style scoped>
-
-</style>
+  </template>
+  
+  <script>
+  import ProductList from '@/components/ProductList.vue'
+  
+  export default {
+    components: {
+      ProductList
+    }
+  }
+  </script>
+  
