@@ -63,6 +63,8 @@ const SignUp = function(){
       age : age.value,
       bank : bank.value
     }
+  console.log(bank.value)
+  console.log(age.value)
   store.SignUp(payload)
 }
 
