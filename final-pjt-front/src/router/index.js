@@ -11,7 +11,7 @@ import SavingView from '../views/SavingView.vue'
 import SavingDetailView from '../views/SavingDetailView.vue'
 import CommunityView from '../views/CommunityView.vue'
 import CommunityCreateView from '../views/CommunityCreateView.vue'
-import ExchangeRateCalculator from '../views/ExchangeView.vue' // 추가된 부분
+import ExchangeRateCalculator from '../views/ExchangeRateCalculator.vue' // 추가된 부분
 import { useUserStore } from '@/stores/users'
 import { useProductStore } from '@/stores/products'
 
@@ -99,6 +99,10 @@ router.beforeEach((to, from) => {
   const userStore = useUserStore()
   const productStore = useProductStore()
   if (to.name === 'home' && !userStore.isLogin) {
+    window.alert('로그인이 필요합니다.')
+    return { name: 'login' }
+  }
+  if (to.name === 'profile' && !userStore.isLogin) {
     window.alert('로그인이 필요합니다.')
     return { name: 'login' }
   }
