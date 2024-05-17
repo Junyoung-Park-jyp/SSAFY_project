@@ -127,6 +127,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST-AUTH 회원가입 기본 Serailizer 재정의
+REST_AUTH = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
