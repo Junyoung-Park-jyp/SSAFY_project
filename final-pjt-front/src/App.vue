@@ -17,9 +17,9 @@ const isLogin = computed(() => userStore.isLogin)
         <RouterLink :to="{name: 'login'}">Log In | </RouterLink>
         <RouterLink :to="{name: 'community'}">community | </RouterLink>
         <RouterLink :to="{name: 'products'}">products | </RouterLink>
-        <RouterLink :to="{name: 'create'}">create | </RouterLink>
+        
         <RouterLink :to="{name: 'accounts'}">accounts | </RouterLink>
-        <RouterLink :to="{name: 'community'}">Community</RouterLink>
+        <RouterLink :to="{name: 'profile'}">profile</RouterLink>
       </nav>
     </div>
   </header>

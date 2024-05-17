@@ -20,7 +20,7 @@
     </div>
     <div>
       <h2>가입한 상품 금리</h2>
-      <ProductChart :savingProducts="user.saving_products" :depositProducts="user.deposit_products" />
+      <!-- <ProductChart :savingProducts="user.saving_products" :depositProducts="user.deposit_products" /> -->
     </div>
   </div>
 </template>
@@ -28,12 +28,12 @@
 <script>
 import axios from 'axios';
 import { useUserStore } from '@/stores/users'
-import ProductChart from '@/components/ProductChart.vue'
+// import ProductChart from '@/components/ProductChart.vue'
 
 export default {
-  components: {
-    ProductChart
-  },
+  // components: {
+  //   ProductChart
+  // },
   data() {
     return {
       user: {},
