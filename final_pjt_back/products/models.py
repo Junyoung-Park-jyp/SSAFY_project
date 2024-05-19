@@ -42,3 +42,4 @@ class SavingOptions(models.Model):
     save_trm = models.IntegerField()
     rsrv_type = models.CharField(max_length=5) 
     rsrv_type_nm = models.TextField()
+

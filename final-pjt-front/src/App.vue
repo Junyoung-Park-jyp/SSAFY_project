@@ -2,6 +2,7 @@
 import { useArticleStore } from '@/stores/articles'
 import { RouterLink, RouterView } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
+import MapComponent from './components/MapComponent.vue';
 const store = useArticleStore()
 const isLogin = computed(() => store.isLogin)
 
@@ -17,6 +18,7 @@ const isLogin = computed(() => store.isLogin)
       </nav>
     </div>
   </header>
+  <MapComponent/>
 
   <RouterView />
 </template>
