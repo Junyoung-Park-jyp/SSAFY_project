@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ACCOUNT_ADAPTER = 'accounts.models.CustomAccountAdapter'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,7 +53,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+SITE_ID = 1
+
+REST_USE_JWT = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = False
+
 
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
@@ -78,6 +86,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'your_app_name.serializers.CustomRegisterSerializer',
+}
+
 
 TEMPLATES = [
     {
@@ -127,6 +140,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST-AUTH 회원가입 기본 Serailizer 재정의
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -151,3 +166,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5173',
+    'http://localhost:5173',
+]

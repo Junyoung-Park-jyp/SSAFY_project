@@ -12,6 +12,9 @@ class DepositProducts(models.Model):
     join_way = models.TextField()
     spcl_cnd = models.TextField()
 
+    def __str__(self):
+        return self.fin_prdt_nm
+
 
 class DepositOptions(models.Model):
     product = models.ForeignKey(DepositProducts, on_delete=models.CASCADE)
@@ -20,6 +23,9 @@ class DepositOptions(models.Model):
     intr_rate = models.FloatField()
     intr_rate2 = models.FloatField()
     save_trm = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.product} - {self.intr_rate_type_nm}'
 
 
 class SavingProducts(models.Model):
@@ -32,6 +38,9 @@ class SavingProducts(models.Model):
     join_way = models.TextField()
     spcl_cnd = models.TextField()
 
+    def __str__(self):
+        return self.fin_prdt_nm
+
 
 class SavingOptions(models.Model):
     product = models.ForeignKey(SavingProducts, on_delete=models.CASCADE)
@@ -40,5 +49,8 @@ class SavingOptions(models.Model):
     intr_rate = models.FloatField()
     intr_rate2 = models.FloatField()
     save_trm = models.IntegerField()
-    rsrv_type = models.CharField(max_length=5) 
+    rsrv_type = models.CharField(max_length=5)
     rsrv_type_nm = models.TextField()
+
+    def __str__(self):
+        return f'{self.product} - {self.intr_rate_type_nm}'
