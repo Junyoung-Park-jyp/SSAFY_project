@@ -21,6 +21,9 @@
               <RouterLink class="nav-link" :to="{name: 'profile'}">Profile</RouterLink>
             </li>
             <li class="nav-item">
+              <RouterLink class="nav-link" :to="{name: 'search'}">가까운 은행 찾기</RouterLink>
+            </li>
+            <li class="nav-item">
               <RouterLink class="nav-link" :to="{name: 'exchangeRateCalculator'}">환율 계산기</RouterLink>
             </li>
           </ul>
@@ -28,7 +31,6 @@
       </div>
     </nav>
   </div>
-
   <RouterView />
 </template>
 
