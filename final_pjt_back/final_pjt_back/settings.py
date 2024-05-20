@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-ACCOUNT_ADAPTER = 'accounts.models.CustomAccountAdapter'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -85,10 +82,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-}
-
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'your_app_name.serializers.CustomRegisterSerializer',
 }
 
 

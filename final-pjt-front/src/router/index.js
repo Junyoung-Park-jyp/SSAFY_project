@@ -12,6 +12,8 @@ import SavingDetailView from '../views/SavingDetailView.vue'
 import CommunityView from '../views/CommunityView.vue'
 import CommunityCreateView from '../views/CommunityCreateView.vue'
 import ExchangeRateCalculator from '../views/ExchangeRateCalculator.vue' // 추가된 부분
+import ErrorView from '../views/ErrorView.vue' // 추가된 부분
+import UserInfoView from '../views/UserInfoView.vue' // 추가된 부분
 import { useUserStore } from '@/stores/users'
 import { useProductStore } from '@/stores/products'
 
@@ -43,6 +45,11 @@ const routes = [
         path: 'profile',
         name: 'profile',
         component: ProfileView
+      },
+      {
+        path: 'userinfo/:username',
+        name: 'userinfo',
+        component: UserInfoView
       }
     ]
   },
@@ -87,6 +94,11 @@ const routes = [
     path: '/exchange-rate-calculator', // 추가된 부분
     name: 'exchangeRateCalculator',
     component: ExchangeRateCalculator
+  },
+  {
+    path: '/error/:code',
+    name: 'error',
+    component: ErrorView
   }
 ]
 
