@@ -1,27 +1,33 @@
 // SignUpView.vue
 
 <template>
-  <div>
-    <h1>회원가입 페이지</h1>
-    <form @submit.prevent="SignUp">
-      <p>
-        <label for="username">아이디:</label>
-        <input type="text" id="username" v-model.trim="username">
-      </p>
-      <p>
-        <label for="password1">비밀번호:</label>
-        <input type="password" id="password1" v-model.trim="password1">
-      </p>
-      <p>
-        <label for="password2">비밀번호 확인:</label>
-        <input type="password" id="password2" v-model.trim="password2">
-      </p>
-      <p>
-        <label for="email">이메일:</label>
-        <input type="email" id="email" v-model.trim="email">
-      </p>
-      <input type="submit">
-    </form>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="card-title">회원가입 페이지</h1>
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="SignUp">
+          <div class="mb-3">
+            <label for="username" class="form-label">아이디:</label>
+            <input type="text" id="username" class="form-control" v-model.trim="username">
+          </div>
+          <div class="mb-3">
+            <label for="password1" class="form-label">비밀번호:</label>
+            <input type="password" id="password1" class="form-control" v-model.trim="password1">
+          </div>
+          <div class="mb-3">
+            <label for="password2" class="form-label">비밀번호 확인:</label>
+            <input type="password" id="password2" class="form-control" v-model.trim="password2">
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">이메일:</label>
+            <input type="email" id="email" class="form-control" v-model.trim="email">
+          </div>
+          <button type="submit" class="btn btn-primary">회원가입</button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 

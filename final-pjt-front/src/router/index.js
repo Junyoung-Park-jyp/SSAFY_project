@@ -14,6 +14,7 @@ import CommunityCreateView from '../views/CommunityCreateView.vue'
 import ExchangeRateCalculator from '../views/ExchangeRateCalculator.vue' // 추가된 부분
 import ErrorView from '../views/ErrorView.vue' // 추가된 부분
 import UserInfoView from '../views/UserInfoView.vue' // 추가된 부분
+import PostDetailView from '../views/PostDetailView.vue' // 추가된 부분
 import { useUserStore } from '@/stores/users'
 import { useProductStore } from '@/stores/products'
 
@@ -60,8 +61,18 @@ const routes = [
   },
   {
     path: '/community',
-    name: 'community',
-    component: CommunityView
+    children: [
+      {
+        path: '',
+        name: 'community',
+        component: CommunityView
+      },
+      {
+        path: ':postId',
+        name: 'post',
+        component: PostDetailView
+      }
+    ]
   },
   {
     path: '/products',

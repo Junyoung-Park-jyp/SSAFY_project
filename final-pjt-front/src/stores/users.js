@@ -17,11 +17,12 @@ export const useUserStore = defineStore('user', () => {
     const username = payload.username
     const password1 = payload.password1
     const password2 = payload.password2
+    const email = payload.email
     axios({
       method: 'post',
       url: `http://127.0.0.1:8000/accounts/signup/`,
       data : {
-        username, password1, password2
+        username, password1, password2, email
       }
     })
     .then((res) => {
@@ -44,7 +45,10 @@ export const useUserStore = defineStore('user', () => {
         username, age, current_balance, bank, annual_salary
       },
       headers: { Authorization: `Token ${token.value}` }
-      
+
+    })
+    .then((res) => {
+      router.push({ name: 'home'})
     })
   }
 
@@ -53,9 +57,8 @@ export const useUserStore = defineStore('user', () => {
       const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload)
       console.log('login', response.data)
       token.value = response.data.key
-      // router.push({ name: 'profile' })
     } catch (err) {
-      router.push({ name: 'error', params: { code: err}})
+      console.log(err)
     }
   }
 
