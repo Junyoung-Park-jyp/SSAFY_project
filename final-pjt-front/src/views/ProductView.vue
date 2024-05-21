@@ -1,52 +1,58 @@
 <template>
-  <div class="container mt-4 products">
-    <h1 style="text-align: center;">Products</h1>
-    <nav class="product-nav">
-      <RouterLink :to="{ name: 'deposit' }" class="nav-link">정기예금</RouterLink>
-      <RouterLink :to="{ name: 'saving' }" class="nav-link">정기적금</RouterLink>
+  <div class="container mt-5 product-view">
+    <nav class="nav nav-pills justify-content-center mb-4">
+      <RouterLink class="nav-link" :to="{name: 'deposit'}">정기예금</RouterLink>
+      <RouterLink class="nav-link" :to="{name: 'saving'}">정기적금</RouterLink>
     </nav>
     <RouterView />
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ProductView',
-};
-</script>
-
 <style scoped>
-.products {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+.product-view {
+  background: linear-gradient(to right, #ffffff, #f7f7f7);
+  padding: 60px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.3s ease;
+}
+
+.product-view:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
-  color: #002b5c;
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  color: #004080;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 30px;
 }
 
-.product-nav {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
+.nav-pills {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
 }
 
-.nav-link {
-  padding: 10px 20px;
-  background-color: #005c99;
+.nav-pills .nav-link {
+  margin: 0 15px;
+  padding: 12px 25px;
+  background-color: #004080;
   color: white;
-  border-radius: 5px;
-  text-decoration: none;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.nav-link:hover {
-  background-color: #002b5c;
+.nav-pills .nav-link:hover {
+  background-color: #0059b3;
+  transform: translateY(-2px);
+}
+
+.nav-pills .nav-link.active {
+  background-color: #003366;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 </style>

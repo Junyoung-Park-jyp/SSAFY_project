@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4 deposit">
-    <h1>정기예금</h1>
+    <h1 class="text-center">정기예금</h1>
     <div class="filters">
       <div class="mb-3">
         <label for="bank" class="form-label">은행 선택:</label>
