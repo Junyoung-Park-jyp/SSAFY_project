@@ -15,23 +15,23 @@
               <li class="nav-item" v-if="!isLogin">
                 <RouterLink class="nav-link" :to="{name: 'login'}">Log In</RouterLink>
               </li>
+              <li class="nav-item" v-if="isLogin">
+                <button class="nav-link btn" @click="LogOut">Logout</button>
+              </li>
+              <li class="nav-item" v-if="isLogin">
+                <RouterLink class="nav-link" :to="{name: 'profile'}">Profile</RouterLink>
+              </li>
               <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'community'}">Community</RouterLink>
               </li>
               <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'products'}">Products</RouterLink>
               </li>
-              <li class="nav-item" v-if="isLogin">
-                <RouterLink class="nav-link" :to="{name: 'profile'}">Profile</RouterLink>
-              </li>
               <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'search'}">Find Nearby Banks</RouterLink>
               </li>
               <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'exchangeRateCalculator'}">Currency Converter</RouterLink>
-              </li>
-              <li class="nav-item" v-if="isLogin">
-                <button class="nav-link btn" @click="LogOut">Logout</button>
               </li>
             </ul>
           </div>

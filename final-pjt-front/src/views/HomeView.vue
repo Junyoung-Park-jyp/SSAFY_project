@@ -1,32 +1,35 @@
 <template>
   <div class="home">
-    <header class="hero">
-      <div class="slideshow-container">
-        <div class="slideshow">
-          <div class="slide">
-        <img src="@/assets/slide1.png" alt="Slide 3">
-      </div>
-          <div class="slide">
-        <img src="@/assets/slide2.png" alt="Slide 3">
-      </div>
-          <div class="slide">
-        <img src="@/assets/slide3.png" alt="Slide 3">
-      </div>
-          <div class="slide">
-        <img src="@/assets/slide4.png" alt="Slide 3">
-      </div>
-      <div class="slide">
-        <img src="@/assets/slide5.png" alt="Slide 3">
-      </div>
-      <div class="slide">
-        <img src="@/assets/slide6.png" alt="Slide 3">
-      </div>
-      <div class="slide">
-        <img src="@/assets/slide7.png" alt="Slide 3">
-      </div>
+      <header class="hero">
+        <div class="slideshow-container">
+          <div class="slideshow">
+            <div class="slide">
+              <img src="@/assets/slide10.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide10.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide10.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide8.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide8.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide8.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide8.gif" alt="Slide 3">
+            </div>
+            <div class="slide">
+              <img src="@/assets/slide8.gif" alt="Slide 3">
+            </div>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
     <section class="features">
       <div class="feature">
         <h2>Easy Banking</h2>

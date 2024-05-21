@@ -2,7 +2,7 @@
   <div class="container mt-4 userinfo">
     <div class="card">
       <div class="card-header">
-        <h1 class="card-title">{{ username }}님 가입을 환영합니다!</h1>
+        <h1 class="card-title" style="color:white;">{{ username }}님 가입을 환영합니다!</h1>
       </div>
       <div class="card-body">
         <form @submit.prevent="UserInfo">
@@ -48,10 +48,11 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/users'
 import { storeToRefs } from 'pinia'
+
 const age = ref(null)
 const bank = ref(null)
 const current_balance = ref(null)
@@ -71,6 +72,21 @@ const UserInfo = function(){
   console.log(payload)
   store.UserInfo(payload)
 }
+
+</script>
+<script>
+export default {
+  name: 'UserInfo',
+  // Other component options
+  beforeRouteLeave(to, from, next) {
+    const confirmMessage = "상세 정보를 입력하지 않으면 추천이 제대로 이루어지지 않을 수 있습니다. 그래도 입력을 취소하시겠습니까?";
+    if (window.confirm(confirmMessage)) {
+      next(); // '예'를 누르면 페이지를 떠납니다.
+    } else {
+      next(false); // '아니오'를 누르면 페이지를 떠나지 않습니다.
+    }
+  },
+};
 </script>
 
 <style scoped>
