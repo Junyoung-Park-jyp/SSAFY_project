@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4 signup">
+  <div class="login-container">
     <div class="card">
       <div class="card-header">
         <h1 class="card-title" style="color:white;">로그인 페이지</h1>
@@ -25,96 +25,98 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/users'
 import { useRouter } from 'vue-router'
+
 const username = ref('')
-const router = useRouter()
 const password = ref('')
 const store = useUserStore()
+const router = useRouter()
 
-const LogIn = function(){
+const LogIn = async () => {
   if (!username.value || !password.value) {
     alert('아이디와 비밀번호를 모두 입력해주세요.')
     return
   }
 
-  const payload = {
-    username: username.value,
-    password: password.value
+  try {
+    await store.LogIn({ username: username.value, password: password.value })
+    router.push({ name: 'home' })
+  } catch (err) {
+    alert('로그인에 실패했습니다.')
+    console.error(err)
   }
-  store.LogIn(payload)
-    .then(() => {
-      router.push({ name: 'home' })
-    })
-    .catch(err => {
-      alert('로그인에 실패했습니다.')
-      console.error(err)
-    })
 }
 </script>
 
 <style scoped>
-.signup {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #6dd5fa, #ffffff);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h1 {
-  color: #002b5c;
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.card {
+  width: 100%;
+  max-width: 600px; /* 기존 크기 유지 */
+  padding: 20px;
+  margin-bottom: 20%;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease;
 }
 
-.card {
-  border: none;
-  border-radius: 10px;
-  overflow: hidden;
+.card:hover {
+  transform: translateY(-10px);
 }
 
 .card-header {
-  background: #002b5c;
-  color: white;
-  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .card-title {
-  margin: 0;
-  font-size: 24px;
+  font-size: 28px;
+  color: #005c99;
+  font-weight: bold;
 }
 
-.card-body {
-  padding: 20px;
-}
-
-.signup-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group {
-  margin-bottom: 15px;
+.form-label {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-control {
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #005c99;
+  box-shadow: 0 0 5px rgba(0, 92, 153, 0.5);
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background-color: #002b5c;
+  width: 100%;
+  padding: 10px;
+  background-color: #005c99;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-  background-color: #005c99;
+  background-color: #004080;
 }
 </style>

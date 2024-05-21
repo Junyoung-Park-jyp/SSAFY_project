@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4 saving">
-    <h1>정기적금</h1>
+    <h1 class="text-center">정기적금</h1>
     <div class="filters">
       <div class="mb-3">
         <label for="bank" class="form-label">은행 선택:</label>
@@ -37,7 +37,7 @@
         </select>
       </div>
     </div>
-    <SavingList :savings="filteredSavings" @selectSaving="viewSavingDetail" />
+    <SavingList :savings="filteredSavings" :terms="terms" @selectSaving="viewSavingDetail" />
   </div>
 </template>
 
@@ -67,7 +67,7 @@ export default {
       if (selectedTerm.value) {
         return [Number(selectedTerm.value)];
       } else {
-        return [1, 3, 6, 12, 24, 36];
+        return [6, 12, 24, 36];  // 표시할 기간 목록
       }
     });
 

@@ -4,7 +4,7 @@
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
           <RouterLink class="navbar-brand" to="/">
-            <img src="@/assets/bank-for-you-logo.png" alt="Bank For You Logo" class="nav-logo" style="border-radius: 50%;">
+            <img src="@/assets/logo.png" alt="Bank For You Logo" class="nav-logo" style="border-radius: 50%;">
             Bank For You
           </RouterLink>
           <div class="collapse navbar-collapse" id="navbarNav">

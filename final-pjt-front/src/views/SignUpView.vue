@@ -1,7 +1,5 @@
-// SignUpView.vue
-
 <template>
-  <div class="container mt-4 signup">
+  <div class="signup-container">
     <div class="card">
       <div class="card-header">
         <h1 class="card-title" style="color:white;">회원가입 페이지</h1>
@@ -34,13 +32,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/users'
-import { storeToRefs } from 'pinia'
 
 const username = ref(null)
 const password1 = ref(null)
 const password2 = ref(null)
 const email = ref(null)
 const store = useUserStore()
+
 const SignUp = function(){
   const payload = {
       username: username.value,
@@ -54,69 +52,75 @@ const SignUp = function(){
 </script>
 
 <style scoped>
-.signup {
-  background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #6dd5fa, #ffffff);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h1 {
-  color: #002b5c;
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.card {
+  width: 100%;
+  max-width: 600px; /* 기존 크기 유지 */
+  padding: 20px;
+  margin-bottom: 15%;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s ease;
 }
 
-.card {
-  border: none;
-  border-radius: 10px;
-  overflow: hidden;
+.card:hover {
+  transform: translateY(-10px);
 }
 
 .card-header {
-  background: #002b5c;
-  color: white;
-  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .card-title {
-  margin: 0;
-  font-size: 24px;
+  font-size: 28px;
+  color: #005c99;
+  font-weight: bold;
 }
 
-.card-body {
-  padding: 20px;
-}
-
-.signup-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group {
-  margin-bottom: 15px;
+.form-label {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-control {
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #005c99;
+  box-shadow: 0 0 5px rgba(0, 92, 153, 0.5);
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background-color: #002b5c;
+  width: 100%;
+  padding: 10px;
+  background-color: #005c99;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-  background-color: #005c99;
+  background-color: #004080;
 }
 </style>

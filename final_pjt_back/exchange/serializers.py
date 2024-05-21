@@ -1,5 +1,6 @@
 from rest_framework import serializers
-
-class ExchangeRateSerializer(serializers.Serializer):
-    currency = serializers.CharField()
-    rate = serializers.FloatField()
+from .models import *
+class ExchangeRateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExchangeRate
+        fields = ['currency', 'rate', 'country_name_ko', 'country_name_en']

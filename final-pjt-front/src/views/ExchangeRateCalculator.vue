@@ -1,25 +1,28 @@
 <template>
-  <div>
+  <div class="container exchange-rate">
     <h1>환율 계산기</h1>
-    <div v-if="error">{{ error }}</div>
+    <div v-if="error" class="alert alert-danger">{{ error }}</div>
     <div v-else>
-      <div>
-        <label for="currency">국가:</label>
-        <select v-model="selectedCurrency" @change="calculateFromKRW" id="currency">
+      <div class="form-group">
+        <label for="currency" class="form-label">국가:</label>
+        <select v-model="selectedCurrency" @change="updateSelectedCurrency" id="currency" class="form-control">
           <option v-for="rate in exchangeRates" :key="rate.currency" :value="rate.rate">
-            {{ rate.currency }}
+            {{ rate.currency }} ({{ rate.country_name_ko }} / {{ rate.country_name_en }})
           </option>
         </select>
       </div>
-      <div>
-        <label for="krwAmount">원화 입력:</label>
-        <input type="number" v-model="krwAmount" @input="calculateFromKRW" id="krwAmount" />
+      <div class="form-group">
+        <label for="krwAmount" class="form-label">원화 입력:</label>
+        <input type="number" v-model="krwAmount" @input="calculateFromKRW" id="krwAmount" class="form-control" />
       </div>
-      <div>
-        <label for="foreignAmount">타국 통화 입력:</label>
-        <input type="number" v-model="foreignAmount" @input="calculateFromForeign" id="foreignAmount" />
+      <div class="form-group">
+        <label for="foreignAmount" class="form-label">타국 통화 입력:</label>
+        <input type="number" v-model="foreignAmount" @input="calculateFromForeign" id="foreignAmount" class="form-control" />
       </div>
-      
+      <div class="result-group">
+        <p><strong>환율 계산 결과:</strong></p>
+        <p>{{ krwAmount }} KRW = {{ foreignAmount }} {{ selectedCurrencyName }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -83,35 +86,71 @@ export default {
 </script>
 
 <style scoped>
-/* Add styles to match the design */
+.exchange-rate {
+  background: #f4f7f6;
+  padding: 60px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  margin: 40px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  color: #333;
+}
+
 h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+  color: #002b5c;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+  text-transform: uppercase;
 }
 
-div {
-  margin-bottom: 10px;
+.form-group {
+  margin-bottom: 30px;
 }
 
-label {
+.form-label {
   display: block;
-  margin-bottom: 5px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
-input {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
+.form-control {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 18px;
+  margin-bottom: 10px;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-select {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
+.form-control:focus {
+  border-color: #005c99;
+  box-shadow: 0 0 10px rgba(0, 92, 153, 0.5);
 }
 
-h2 {
+.result-group {
+  background: #e9f5fb;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
   margin-top: 20px;
-  font-size: 20px;
+  font-size: 18px;
+  color: #002b5c;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+}
+
+.alert-danger {
+  background-color: #d9534f;
 }
 </style>
