@@ -1,7 +1,7 @@
 // SignUpView.vue
 
 <template>
-  <div class="container mt-4">
+  <div class="container mt-4 signup">
     <div class="card">
       <div class="card-header">
         <h1 class="card-title">회원가입 페이지</h1>
@@ -54,4 +54,69 @@ const SignUp = function(){
 </script>
 
 <style scoped>
+.signup {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+  color: #002b5c;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: #002b5c;
+  color: white;
+  padding: 20px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background-color: #002b5c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #005c99;
+}
 </style>
