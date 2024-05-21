@@ -17,33 +17,38 @@ export const useUserStore = defineStore('user', () => {
     const username = payload.username
     const password1 = payload.password1
     const password2 = payload.password2
-    const age = payload.age
-    const bank = payload.bank
+    const email = payload.email
     axios({
       method: 'post',
       url: `http://127.0.0.1:8000/accounts/signup/`,
       data : {
-        username, password1, password2, age, bank
+        username, password1, password2, email
       }
     })
     .then((res) => {
-      LogIn({username, password})
-      router.push({ name: 'home' })
+      LogIn({ username:username, password:password1 })
+      router.push({ name: 'userinfo', params:{ username: username}})
     })
-    .catch(err => console.log(err))
+    .catch(err => router.push({ name: 'error', params: { code: err}}))
   }
 
   const UserInfo = function(payload){
+    const username = payload.username
     const age = payload.age
     const current_balance = payload.current_balance
     const bank = payload.bank
     const annual_salary = payload.annual_salary
     axios({
       method: 'post',
-      url: 'http://127.0.0.1:8000/accounts/userinfo/',
+      url: 'http://127.0.0.1:8000/api/v1/accounts/userinfo/',
       data: {
-        age, current_balance, bank, annual_salary
-      }
+        username, age, current_balance, bank, annual_salary
+      },
+      headers: { Authorization: `Token ${token.value}` }
+
+    })
+    .then((res) => {
+      router.push({ name: 'home'})
     })
   }
 
@@ -52,9 +57,8 @@ export const useUserStore = defineStore('user', () => {
       const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload)
       console.log('login', response.data)
       token.value = response.data.key
-      router.push({ name: 'profile' })
-    } catch (error) {
-      console.error(error)
+    } catch (err) {
+      console.log(err)
     }
   }
 

@@ -12,6 +12,10 @@ import SavingDetailView from '../views/SavingDetailView.vue'
 import CommunityView from '../views/CommunityView.vue'
 import CommunityCreateView from '../views/CommunityCreateView.vue'
 import ExchangeRateCalculator from '../views/ExchangeRateCalculator.vue' // 추가된 부분
+import ErrorView from '../views/ErrorView.vue' // 추가된 부분
+import UserInfoView from '../views/UserInfoView.vue' // 추가된 부분
+import PostDetailView from '../views/PostDetailView.vue' // 추가된 부분
+import KakaoMapView from '../views/KakaoMapView.vue' // 추가된 부분
 import { useUserStore } from '@/stores/users'
 import { useProductStore } from '@/stores/products'
 
@@ -43,6 +47,11 @@ const routes = [
         path: 'profile',
         name: 'profile',
         component: ProfileView
+      },
+      {
+        path: 'userinfo/:username',
+        name: 'userinfo',
+        component: UserInfoView
       }
     ]
   },
@@ -53,8 +62,18 @@ const routes = [
   },
   {
     path: '/community',
-    name: 'community',
-    component: CommunityView
+    children: [
+      {
+        path: '',
+        name: 'community',
+        component: CommunityView
+      },
+      {
+        path: ':postId',
+        name: 'post',
+        component: PostDetailView
+      }
+    ]
   },
   {
     path: '/products',
@@ -87,6 +106,16 @@ const routes = [
     path: '/exchange-rate-calculator', // 추가된 부분
     name: 'exchangeRateCalculator',
     component: ExchangeRateCalculator
+  },
+  {
+    path: '/error/:code',
+    name: 'error',
+    component: ErrorView
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: KakaoMapView
   }
 ]
 
@@ -98,7 +127,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const userStore = useUserStore()
   const productStore = useProductStore()
-  if (to.name === 'home' && !userStore.isLogin) {
+  if (to.name === 'create' && !userStore.isLogin) {
     window.alert('로그인이 필요합니다.')
     return { name: 'login' }
   }
