@@ -9,12 +9,12 @@
           <p>회원번호: {{ user.id }}</p>
           <p>ID: {{ user.username }}</p>
           <p>Email: <input v-model="user.email" class="form-control" /></p>
-          <p>나이: <input v-model="user.user_info.age" class="form-control" /></p>
-          <p>현재 가진 금액: <input v-model="user.user_info.current_balance" class="form-control" /></p>
-          <p>연봉: <input v-model="user.user_info.annual_salary" class="form-control" /></p>
+          <p>나이: <input v-model="user_info.age" class="form-control" /></p>
+          <p>현재 가진 금액: <input v-model="user_info.current_balance" class="form-control" /></p>
+          <p>연봉: <input v-model="user_info.annual_salary" class="form-control" /></p>
           <p>
             <label for="bank">주 이용은행:</label>
-            <select id="bank" v-model="user.user_info.bank" class="form-select">
+            <select id="bank" v-model="user_info.bank" class="form-select">
               <option value="우리은행">우리은행</option>
               <option value="신한은행">신한은행</option>
               <option value="하나은행">하나은행</option>
@@ -47,47 +47,41 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { useUserStore } from '@/stores/users';
-import { ref, onMounted } from 'vue'
-const user = ref(null)
-const store = useUserStore()
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+const user = ref(null);
+const user_info = ref(null);
+const store = useUserStore();
+
 const loadUserProfile = async () => {
-  user.value = await store.getProfile()
-}
+  const profile = await store.getProfile();
+  user.value = profile;
+  user_info.value = profile.user_info;
+};
+
+const updateProfile = async () => {
+  try {
+    const userResponse = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update-profile/', {
+      email: user.value.email,
+    });
+    const userInfoResponse = await axios.put('htpp://127.0.0.1:8000/api/v1/accounts/profile/update-info/', user_info.value);
+    user.value = userResponse.data;
+    user_info.value = userInfoResponse.data;
+    alert('프로필이 성공적으로 업데이트되었습니다.');
+  } catch (error) {
+    console.error('프로필 업데이트 중 오류가 발생했습니다:', error);
+    alert('프로필 업데이트 중 오류가 발생했습니다.');
+  }
+};
+
+
 
 onMounted(() => {
-  loadUserProfile()
-})
+  loadUserProfile();
+});
 </script>
-<!-- <script>
-import { useUserStore } from '@/stores/users'
 
-export default {
-  data() {
-    return {
-      user: {},
-    }
-  },
-  async created() {
-    const userStore = useUserStore()
-    const profile = await userStore.getProfile()
-    if (profile) {
-      this.user = profile
-    }
-  },
-  methods: {
-    async updateProfile() {
-      const userStore = useUserStore()
-      try {
-        const response = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update/', this.user, {
-          headers: { Authorization: `Token ${userStore.token}` }
-        })
-        alert('프로필이 수정되었습니다.')
-      } catch (error) {
-        console.error(error)
-      }
-    }
-  }
-}
-</script> -->

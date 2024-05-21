@@ -26,13 +26,15 @@
     <label for="term">예치 기간 선택:</label>
     <select id="term" v-model="selectedTerm" @change="filterProducts">
       <option value="">전체 기간</option>
+      <option value="1">1개월</option>
+      <option value="3">3개월</option>
       <option value="6">6개월</option>
       <option value="12">12개월</option>
       <option value="24">24개월</option>
       <option value="36">36개월</option>
     </select>
     
-    <DepositList :deposits="filteredDeposits" @selectDeposit="viewDepositDetail" />
+    <DepositList :deposits="filteredDeposits" :terms="terms" @selectDeposit="viewDepositDetail" />
   </div>
 </template>
 
@@ -58,6 +60,14 @@ export default {
       });
     });
 
+    const terms = computed(() => {
+      if (selectedTerm.value) {
+        return [Number(selectedTerm.value)];
+      } else {
+        return [1, 3, 6, 12, 24, 36];
+      }
+    });
+
     const filterProducts = () => {
       productStore.getDeposits();
     };
@@ -70,7 +80,8 @@ export default {
       productStore.getDeposits();
     });
 
-    return { selectedBank, selectedTerm, filteredDeposits, filterProducts, viewDepositDetail };
+    return { selectedBank, selectedTerm, filteredDeposits, terms, filterProducts, viewDepositDetail };
   }
 };
 </script>
+

@@ -3,6 +3,12 @@
     <input type="text" v-model="cityInput" placeholder="시를 입력하세요">
     <input type="text" v-model="districtInput" placeholder="구를 입력하세요">
     <button @click="search">검색</button>
+    <select v-model="selectedOption">
+      <option value="모든 은행">모든 은행</option>
+      <option value="신한은행">신한은행</option>
+      <option value="국민은행">국민은행</option>
+      <!-- 추가 은행 옵션 -->
+    </select>
     <div id="map"></div>
   </div>
 </template>
@@ -15,9 +21,9 @@ const kakaoMapApiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY;
 let map, geocoder;
 const cityInput = ref('');
 const districtInput = ref('');
+const selectedOption = ref('모든 은행');
 
 onMounted(() => {
-  // 카카오 맵 API 스크립트를 동적으로 로드
   const script = document.createElement('script');
   script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoMapApiKey}&libraries=services,clusterer&autoload=false`;
   script.onload = () => {
@@ -35,30 +41,40 @@ onMounted(() => {
 });
 
 const search = () => {
-  const fullAddress = cityInput.value + ' ' + districtInput.value;
+  const fullAddress = `${cityInput.value} ${districtInput.value}`;
   geocoder.addressSearch(fullAddress, (result, status) => {
     if (status === window.kakao.maps.services.Status.OK) {
       const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
       map.setCenter(coords);
-      // 근처 은행 검색 및 마커 추가
       searchBanks(coords);
+    } else {
+      console.error('주소 검색 실패:', status);
     }
   });
 };
 
 const searchBanks = (coords) => {
   const places = new window.kakao.maps.services.Places();
-  const request = {
-    categoryCode: 'BK9', // 은행 카테고리 코드
-    location: coords,
-    radius: 1000 // 검색 반경 (미터)
-  };
-  places.categorySearch(request, (result, status) => {
+  const callback = (result, status) => {
     if (status === window.kakao.maps.services.Status.OK) {
-      result.forEach(place => {
+      const filteredResults = result.filter(place => {
+        if (selectedOption.value === '모든 은행') {
+          return true;
+        } else {
+          return place.place_name.includes(selectedOption.value);
+        }
+      });
+      filteredResults.forEach(place => {
         addMarker(place);
       });
+    } else {
+      console.error('은행 검색 실패:', status);
     }
+  };
+
+  places.categorySearch('BK9', callback, {
+    location: coords,
+    radius: 1000 // 검색 반경 (미터)
   });
 };
 
@@ -67,6 +83,13 @@ const addMarker = (place) => {
     map: map,
     position: new window.kakao.maps.LatLng(place.y, place.x),
     title: place.place_name
+  });
+
+  window.kakao.maps.event.addListener(marker, 'click', () => {
+    const infowindow = new window.kakao.maps.InfoWindow({
+      content: `<div style="padding:5px;">${place.place_name}</div>`
+    });
+    infowindow.open(map, marker);
   });
 };
 </script>
@@ -78,4 +101,6 @@ const addMarker = (place) => {
   margin: 0 auto;
 }
 </style>
+
+
 

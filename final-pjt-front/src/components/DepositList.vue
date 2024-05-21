@@ -6,10 +6,7 @@
           <th>공시 제출월</th>
           <th>금융회사명</th>
           <th>상품명</th>
-          <th>6개월</th>
-          <th>12개월</th>
-          <th>24개월</th>
-          <th>36개월</th>
+          <th v-for="term in terms" :key="term">{{ term }}개월</th>
         </tr>
       </thead>
       <tbody>
@@ -17,10 +14,7 @@
           <td>{{ deposit.pub_month }}</td>
           <td>{{ deposit.kor_co_nm }}</td>
           <td>{{ deposit.fin_prdt_nm }}</td>
-          <td>{{ getRate(deposit, 6) }}</td>
-          <td>{{ getRate(deposit, 12) }}</td>
-          <td>{{ getRate(deposit, 24) }}</td>
-          <td>{{ getRate(deposit, 36) }}</td>
+          <td v-for="term in terms" :key="term">{{ getRate(deposit, term) }}</td>
         </tr>
       </tbody>
     </table>
@@ -30,7 +24,8 @@
 <script>
 export default {
   props: {
-    deposits: Array
+    deposits: Array,
+    terms: Array  // 추가된 부분: 표시할 기간을 받는 prop
   },
   emits: ['selectDeposit'],
   methods: {
@@ -45,3 +40,4 @@ export default {
   }
 };
 </script>
+
