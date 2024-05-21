@@ -17,7 +17,7 @@ class DepositProducts(models.Model):
 
 
 class DepositOptions(models.Model):
-    product = models.ForeignKey(DepositProducts, on_delete=models.CASCADE)
+    product = models.ForeignKey(DepositProducts, on_delete=models.CASCADE, related_name='options')
     fin_prdt_cd = models.TextField()
     intr_rate_type_nm = models.CharField(max_length=100)
     intr_rate = models.FloatField()
@@ -43,7 +43,7 @@ class SavingProducts(models.Model):
 
 
 class SavingOptions(models.Model):
-    product = models.ForeignKey(SavingProducts, on_delete=models.CASCADE)
+    product = models.ForeignKey(SavingProducts, on_delete=models.CASCADE, related_name='options')
     fin_prdt_cd = models.TextField()
     intr_rate_type_nm = models.CharField(max_length=100)
     intr_rate = models.FloatField()
