@@ -13,14 +13,15 @@ def user_profile(request):
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 @permission_classes([IsAuthenticated])
 def user_info(request):
-    user = request.user  # 요청을 보낸 사용자의 정보를 가져옴
-    serializer = UserInfoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(user=user)  # 요청을 보낸 사용자 정보를 저장
-        return Response(serializer.data)
+    if request.method == 'POST':
+        user = request.user  # 요청을 보낸 사용자의 정보를 가져옴
+        serializer = UserInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)  # 요청을 보낸 사용자 정보를 저장
+            return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
