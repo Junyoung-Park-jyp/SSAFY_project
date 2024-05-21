@@ -52,11 +52,12 @@
 import { useUserStore } from '@/stores/users';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'
 
 const user = ref(null);
 const user_info = ref(null);
 const store = useUserStore();
-
+const router = useRouter()
 const loadUserProfile = async () => {
   const profile = await store.getProfile();
   user.value = profile;
@@ -65,19 +66,36 @@ const loadUserProfile = async () => {
 
 const updateProfile = async () => {
   try {
+    // 인증 토큰
+    const authToken = store.token
+
+    // 프로필 업데이트 요청
     const userResponse = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update-profile/', {
       email: user.value.email,
+    }, {
+      headers: {
+        'Authorization': `token ${authToken}` // 인증 토큰을 헤더에 추가합니다.
+      }
     });
-    const userInfoResponse = await axios.put('htpp://127.0.0.1:8000/api/v1/accounts/profile/update-info/', user_info.value);
+
+    // 유저 정보 업데이트 요청
+    const userInfoResponse = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update-info/', user_info.value, {
+      headers: {
+        'Authorization': `token ${authToken}` // 인증 토큰을 헤더에 추가합니다.
+      }
+    });
+
+    // 응답 처리
     user.value = userResponse.data;
     user_info.value = userInfoResponse.data;
     alert('프로필이 성공적으로 업데이트되었습니다.');
+    router.push({name: 'home'})
+
   } catch (error) {
     console.error('프로필 업데이트 중 오류가 발생했습니다:', error);
     alert('프로필 업데이트 중 오류가 발생했습니다.');
   }
 };
-
 
 
 onMounted(() => {

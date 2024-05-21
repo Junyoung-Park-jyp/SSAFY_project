@@ -11,9 +11,7 @@ export default {
     // Kakao 지도 API 로드가 완료되면 실행될 콜백 함수
     if (typeof kakao !== 'undefined') {
       this.initializeMap();
-    } else {
-      console.error("Kakao map API is not loaded");
-    }
+    } 
   },
   methods: {
     initializeMap() {

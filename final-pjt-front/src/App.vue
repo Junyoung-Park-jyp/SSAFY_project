@@ -36,7 +36,7 @@
       </nav>
     </div>
   </header>
-  <MapComponent />
+
   <RouterView />
 </template>
 

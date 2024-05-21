@@ -7,14 +7,17 @@
       <option value="모든 은행">모든 은행</option>
       <option value="신한은행">신한은행</option>
       <option value="국민은행">국민은행</option>
-      <!-- 추가 은행 옵션 -->
     </select>
-    <div id="map"></div>
+    <div id="map">
+      <MapComponent />
+    </div>
   </div>
+  
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import MapComponent from '@/components/MapComponent.vue';
 
 const kakaoMapApiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY;
 
@@ -101,6 +104,4 @@ const addMarker = (place) => {
   margin: 0 auto;
 }
 </style>
-
-
 

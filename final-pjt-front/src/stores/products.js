@@ -16,7 +16,7 @@ export const useProductStore = defineStore('product', () => {
     try {
       const res = await axios.get('http://127.0.0.1:8000/api/v1/products/depositproducts/');
       deposits.value = res.data;
-      console.log('Deposits:', deposits.value); // 데이터 로드 확인
+      // console.log('Deposits:', deposits.value); // 데이터 로드 확인
     } catch (error) {
       console.error(error);
     }
