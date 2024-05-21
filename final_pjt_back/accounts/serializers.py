@@ -1,19 +1,15 @@
 from rest_framework import serializers
-from .models import Post, Comment
+from .models import *
 
-class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    total_likes = serializers.ReadOnlyField()
 
+class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
-        fields = ['id', 'content', 'author', 'total_likes', 'created_at', 'likes']
+        model = UserInfo
+        fields = '__all__'
+        read_only_fields = ['user']
 
-class PostSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
-    comments = CommentSerializer(many=True, read_only=True)
-    total_likes = serializers.ReadOnlyField()
-
+class UserSerializer(serializers.ModelSerializer):
+    user_info = UserInfoSerializer(source='userinfo', read_only=True)
     class Meta:
-        model = Post
-        fields = ['id', 'title', 'content', 'author', 'total_likes', 'created_at', 'comments', 'likes']
+        model = User
+        fields = ['id', 'username', 'user_info', 'email']
