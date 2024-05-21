@@ -37,7 +37,7 @@
         </select>
       </div>
     </div>
-    <DepositList :deposits="filteredDeposits" @selectDeposit="viewDepositDetail" />
+    <DepositList :deposits="filteredDeposits" :terms="terms" @selectDeposit="viewDepositDetail" />
   </div>
 </template>
 
@@ -67,7 +67,7 @@ export default {
       if (selectedTerm.value) {
         return [Number(selectedTerm.value)];
       } else {
-        return [1, 3, 6, 12, 24, 36];
+        return [6, 12, 24, 36];  // 표시할 기간 목록
       }
     });
 

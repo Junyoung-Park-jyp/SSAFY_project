@@ -25,7 +25,7 @@
 export default {
   props: {
     deposits: Array,
-    terms: Array  // 추가된 부분: 표시할 기간을 받는 prop
+    terms: Array
   },
   emits: ['selectDeposit'],
   methods: {
@@ -40,4 +40,3 @@ export default {
   }
 };
 </script>
-
