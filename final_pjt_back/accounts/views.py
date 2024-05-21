@@ -23,14 +23,14 @@ def update_user_profile(request):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET','POST'])
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def user_info(request):
-    if request.method == 'POST':
-        user = request.user
-        user_info, created = UserInfo.objects.get_or_create(user=user)
-        serializer = UserInfoSerializer(user_info, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def update_user_info(request):
+    user = request.user
+    user_info, created = UserInfo.objects.get_or_create(user=user)
+    serializer = UserInfoSerializer(user_info, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
