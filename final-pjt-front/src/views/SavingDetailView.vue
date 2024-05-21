@@ -21,6 +21,7 @@
     <div class="note">
       <p><strong>특이사항:</strong> {{ savingDetail.etc_note }}</p>
     </div>
+    <button class="btn btn-primary">가입하기</button>
   </div>
   <div v-else class="loading">
     <p>Loading...</p>

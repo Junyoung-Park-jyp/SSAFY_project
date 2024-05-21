@@ -2,7 +2,7 @@
   <div class="signup-container">
     <div class="card">
       <div class="card-header">
-        <h1 class="card-title" style="color:white;">회원가입 페이지</h1>
+        <h1 class="card-title">회원가입 페이지</h1>
       </div>
       <div class="card-body">
         <form @submit.prevent="SignUp">
