@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-4">
+  <div class="container mt-4 profile">
     <div class="card">
       <div class="card-header">
         <h1 class="card-title">{{ user?.username }}님의 프로필 페이지</h1>
@@ -47,6 +47,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import { useUserStore } from '@/stores/users';
 import { ref, onMounted } from 'vue'
@@ -59,35 +60,80 @@ const loadUserProfile = async () => {
 onMounted(() => {
   loadUserProfile()
 })
-</script>
-<!-- <script>
-import { useUserStore } from '@/stores/users'
 
-export default {
-  data() {
-    return {
-      user: {},
-    }
-  },
-  async created() {
-    const userStore = useUserStore()
-    const profile = await userStore.getProfile()
-    if (profile) {
-      this.user = profile
-    }
-  },
-  methods: {
-    async updateProfile() {
-      const userStore = useUserStore()
-      try {
-        const response = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update/', this.user, {
-          headers: { Authorization: `Token ${userStore.token}` }
-        })
-        alert('프로필이 수정되었습니다.')
-      } catch (error) {
-        console.error(error)
-      }
-    }
+const updateProfile = async () => {
+  const userStore = useUserStore()
+  try {
+    await userStore.updateProfile(user.value)
+    alert('프로필이 수정되었습니다.')
+  } catch (error) {
+    console.error(error)
   }
 }
-</script> -->
+</script>
+
+<style scoped>
+.profile {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+  color: #002b5c;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: #002b5c;
+  color: white;
+  padding: 20px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-footer {
+  background: #f0f0f0;
+  padding: 20px;
+}
+
+.form-control, .form-select {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: #002b5c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #005c99;
+}
+</style>
