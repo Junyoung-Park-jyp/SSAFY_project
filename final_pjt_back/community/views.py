@@ -3,14 +3,14 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Post, Comment
+from .models import Posting, Comment
 from .serializers import PostSerializer, CommentSerializer
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def post_list(request):
     if request.method == 'GET':
-        posts = Post.objects.all()
+        posts = Posting.objects.all()
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -23,7 +23,7 @@ def post_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticatedOrReadOnly])
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = get_object_or_404(Posting, pk=pk)
     if request.method == 'GET':
         serializer = PostSerializer(post)
         return Response(serializer.data)

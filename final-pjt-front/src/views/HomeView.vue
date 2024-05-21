@@ -25,7 +25,8 @@
             <img src="@/assets/slide7.png" alt="Slide 7">
           </div>
         </div>
-      </header>
+      </div>
+    </header>
     <section class="features">
       <div class="feature">
         <h2>Easy Banking</h2>

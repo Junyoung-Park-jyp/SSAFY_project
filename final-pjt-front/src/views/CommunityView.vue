@@ -1,103 +1,58 @@
 <template>
   <div class="community-container">
-    <div class="card">
-      <div class="card-header">
-        <h1 class="card-title">커뮤니티 게시판</h1>
-      </div>
-      <div class="card-body">
-        <RouterLink :to="{ name: 'create' }" class="btn btn-primary">게시글 작성</RouterLink>
-        <div v-if="posts.length" class="post-list">
-          <h2>게시물 목록</h2>
-          <ul>
-            <li v-for="post in posts" :key="post.id" class="post-item">
-              <RouterLink :to="{ name: 'post', params: { postId: post.id }}" class="post-link">
-                {{ post.title }}
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
-        <div v-else class="no-posts">
-          <p>게시물이 없습니다.</p>
-        </div>
-      </div>
+    <h1>커뮤니티 게시판</h1>
+    <RouterLink :to="{ name: 'create' }" class="btn btn-primary">게시글 작성</RouterLink>
+    <div v-if="posts.length" class="post-list">
+      <h2>게시물 목록</h2>
+      <ul>
+        <li v-for="post in posts" :key="post.id" class="post-item">
+          <RouterLink :to="{ name: 'post', params: { postId: post.id }}" class="post-link">
+            {{ post.title }} 좋아요 {{ post.total_likes }}
+          </RouterLink>
+        </li>
+      </ul>
+    </div>
+    <div v-else class="no-posts">
+      <p>게시물이 없습니다.</p>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { RouterLink } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useProductStore } from '@/stores/products';
 
 export default {
-  components: {
-    RouterLink
-  },
-  data() {
+  setup() {
+    const posts = ref([]);
+    const productStore = useProductStore();
+
+    const fetchPosts = async () => {
+      try {
+        await productStore.getPosts();
+        posts.value = productStore.posts;
+      } catch (error) {
+        console.error('Failed to fetch posts:', error);
+      }
+    };
+
+    onMounted(fetchPosts);
+
     return {
-      posts: []
-    }
+      posts,
+    };
   },
-  methods: {
-    fetchPosts() {
-      axios.get('http://127.0.0.1:8000/api/v1/community/posts/')
-        .then(response => {
-          this.posts = response.data
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
-  },
-  mounted() {
-    this.fetchPosts()
-  }
-}
+};
 </script>
 
 <style scoped>
 .community-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(to right, #6dd5fa, #ffffff);
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.card {
-  width: 100%;
-  max-width: 800px; /* 넉넉한 크기 */
-  padding: 20px;
-  margin-bottom: 20%;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-}
-
-.card-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.card-title {
-  font-size: 28px;
-  color: #005c99;
-  font-weight: bold;
-}
-
-.card-body {
-  padding: 20px;
-}
-
-h2 {
-  color: #005c99;
-  font-size: 24px;
-  margin-bottom: 20px;
 }
 
 .btn-primary {
@@ -108,7 +63,6 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-bottom: 20px;
 }
 
 .btn-primary:hover {
@@ -122,7 +76,6 @@ h2 {
 .post-item {
   padding: 10px;
   border-bottom: 1px solid #ccc;
-  list-style: none;
 }
 
 .post-link {
@@ -132,13 +85,12 @@ h2 {
 }
 
 .post-link:hover {
-  color: #004080;
+  color: #002b5c;
 }
 
 .no-posts {
   margin-top: 20px;
   font-size: 18px;
   color: #777;
-  text-align: center;
 }
 </style>
