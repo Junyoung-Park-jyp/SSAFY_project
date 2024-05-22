@@ -5,8 +5,10 @@ import { useRouter } from 'vue-router';
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter();
-  const token = ref(null);
+  const token = ref(localStorage.getItem('token') || null);
   const isLogin = computed(() => !!token.value);
+  const user = ref(null);
+  const errorMessage = ref('');
 
   const SignUp = async (payload) => {
     const { username, password1, password2, email } = payload;
@@ -15,7 +17,8 @@ export const useUserStore = defineStore('user', () => {
       await LogIn({ username, password: password1 });
       router.push({ name: 'userinfo', params: { username } });
     } catch (err) {
-      router.push({ name: 'error', params: { code: err.response.status } });
+      errorMessage.value = 'Signup failed. Please try again.';
+      console.error(err);
     }
   };
 
@@ -35,7 +38,12 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/accounts/login/', payload);
       token.value = response.data.key;
+      localStorage.setItem('token', token.value);
+      user.value = await getProfile();
+      errorMessage.value = '';  // Reset error message on successful login
+      router.push({ name: 'home' });
     } catch (err) {
+      errorMessage.value = 'Invalid username or password.';
       console.error(err);
     }
   };
@@ -46,6 +54,8 @@ export const useUserStore = defineStore('user', () => {
         headers: { Authorization: `Token ${token.value}` }
       });
       token.value = null;
+      user.value = null;
+      localStorage.removeItem('token');
       router.push({ name: 'login' });
     } catch (err) {
       console.error(err);
@@ -64,5 +74,5 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-  return { SignUp, UserInfo, LogIn, LogOut, getProfile, token, isLogin };
+  return { SignUp, UserInfo, LogIn, LogOut, getProfile, token, isLogin, user, errorMessage };
 }, { persist: true });

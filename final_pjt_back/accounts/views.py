@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import *
 from .serializers import *
+from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -78,3 +81,17 @@ def add_saving(request):
             return Response({'error': 'Saving product not found'}, status=status.HTTP_404_NOT_FOUND)
     
     return Response({'error': 'No saving product ID provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)

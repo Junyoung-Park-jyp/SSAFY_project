@@ -16,7 +16,7 @@
                 <RouterLink class="nav-link" :to="{name: 'login'}">Log In</RouterLink>
               </li>
               <li class="nav-item" v-if="isLogin">
-                <button class="nav-link btn" @click="LogOut">Logout</button>
+                <button class="nav-link btn" @click="logOut">Logout</button>
               </li>
               <li class="nav-item" v-if="isLogin">
                 <RouterLink class="nav-link" :to="{name: 'profile'}">Profile</RouterLink>
@@ -47,7 +47,7 @@ import { useUserStore } from '@/stores/users'
 import { computed } from 'vue'
 const userStore = useUserStore()
 const isLogin = computed(() => userStore.isLogin)
-const LogOut = async () => {
+const logOut = async () => {
   await userStore.LogOut()
 }
 </script>
