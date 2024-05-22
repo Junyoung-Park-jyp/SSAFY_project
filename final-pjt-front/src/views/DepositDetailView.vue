@@ -58,8 +58,7 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res.data)
-        
+        alert(`${depositDetail.value.fin_prdt_nm}상품 가입이 완료되었습니다!`)
       })
       .catch(err => console.log(err))
     }
