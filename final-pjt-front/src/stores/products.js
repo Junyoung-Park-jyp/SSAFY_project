@@ -22,6 +22,15 @@ export const useProductStore = defineStore('product', () => {
     };
   };
 
+  const getPosts = async () => {
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/community/posts/', getAuthHeaders());
+      posts.value = res.data;
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+    }
+  };
+
   const getPostDetail = async (postId) => {
     try {
       const res = await axios.get(`http://127.0.0.1:8000/api/v1/community/posts/${postId}/`, getAuthHeaders());
@@ -103,7 +112,7 @@ export const useProductStore = defineStore('product', () => {
     try {
       const res = await axios.post('http://127.0.0.1:8000/api/v1/community/posts/', { title, content }, getAuthHeaders());
       console.log(res);
-      router.push({ name: 'home' });
+      router.push({ name: 'community' });
     } catch (error) {
       console.error(error);
     }
@@ -121,6 +130,8 @@ export const useProductStore = defineStore('product', () => {
     deleteComment,
     editComment,
     toggleLikeComment,
+    getPosts,
+    posts,
     token,
     isLogin
   };

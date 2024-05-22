@@ -27,7 +27,7 @@ export default {
 
     const createPost = async () => {
       try {
-        await productStore.createPost({ title: title.value, content: content.value });
+        await productStore.createCommunity({ title: title.value, content: content.value });
         title.value = '';
         content.value = '';
       } catch (error) {

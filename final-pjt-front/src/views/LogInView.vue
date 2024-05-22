@@ -64,6 +64,7 @@ export default {
   width: 100%;
   max-width: 400px;
   padding: 20px;
+  margin-bottom: 20%;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   background-color: #fff;

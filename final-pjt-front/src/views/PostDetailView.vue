@@ -52,7 +52,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const post = ref(null);
+    const post = ref(null)
     const newComment = ref({ content: '' });
     const productStore = useProductStore();
     const userStore = useUserStore();

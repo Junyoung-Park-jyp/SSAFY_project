@@ -18,7 +18,7 @@
           </ul>
           <RouterLink :to="{ name: 'create' }" class="btn btn-primary">게시글 작성</RouterLink>
         </div>
-        <div v-else class="no-posts">
+        <div v-else>
           <p>게시물이 없습니다.</p>
         </div>
       </div>
@@ -55,6 +55,7 @@ export default {
 
 <style scoped>
 .community-container {
+  margin-left: auto;
   background: white;
   padding: 40px;
   border-radius: 10px;
