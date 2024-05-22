@@ -60,10 +60,8 @@ const annual_salary = ref(null)
 const store = useUserStore()
 const route = useRoute()
 const username = route.params.username
-const isSubmitting = ref(false)
 
-const UserInfo = () => {
-  isSubmitting.value = false
+const UserInfo = function(){
   const payload = {
       username: username,
       age: age.value,
@@ -72,12 +70,10 @@ const UserInfo = () => {
       annual_salary: annual_salary.value,
     }
   console.log(payload)
-  store.UserInfo(payload).then(() => {
-    isSubmitting.value = true
-  })
+  store.UserInfo(payload)
 }
-</script>
 
+</script>
 <script>
 export default {
   name: 'UserInfo',
@@ -93,11 +89,6 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Your existing CSS */
-</style>
-
 
 <style scoped>
 .userinfo {

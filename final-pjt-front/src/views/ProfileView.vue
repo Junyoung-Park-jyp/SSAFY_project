@@ -47,6 +47,21 @@
             <p><strong>{{ product.product }}</strong> - {{ product.save_trm }}개월</p>
           </div>
         </div>
+        <br>
+        <div v-if="savingChartData || depositChartData">
+          <div v-if="depositChartData">
+            <h3>예금 금리 비교</h3>
+            <LineChart :chartData="depositChartData" />
+          </div>
+          <br>
+          <div v-if="savingChartData">
+            <h3>적금 금리 비교</h3>
+            <LineChart :chartData="savingChartData" />
+          </div>
+        </div>
+        <div v-else>
+          <p>가입한 상품이 없습니다.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -56,56 +71,79 @@
 import { useUserStore } from '@/stores/users';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+import LineChart from '@/components/LineChart.vue';
 
 const user = ref(null);
 const user_info = ref(null);
 const store = useUserStore();
-const router = useRouter()
+const router = useRouter();
+const savingChartData = ref(null);
+const depositChartData = ref(null);
+
 const loadUserProfile = async () => {
   const profile = await store.getProfile();
   user.value = profile;
   user_info.value = profile.user_info;
+  console.log(user_info.value)
+  if (user_info.value.saving_options.length) {
+    savingChartData.value = {
+      labels: user_info.value.saving_options.map(option => `${option.product} (${option.save_trm}개월)`),
+      datasets: [{
+        label: '적금 금리',
+        data: user_info.value.saving_options.map(option => option.intr_rate),
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    };
+  }
+
+  
+  if (user_info.value.deposit_options.length) {
+    depositChartData.value = {
+      labels: user_info.value.deposit_options.map(option => `${option.product} (${option.save_trm}개월)`),
+      datasets: [{
+        label: '예금 금리',
+        data: user_info.value.deposit_options.map(option => option.intr_rate),
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1
+      }]
+    };
+  }
 };
 
 const updateProfile = async () => {
   try {
-    // 인증 토큰
-    const authToken = store.token
-
-    // 프로필 업데이트 요청
+    const authToken = store.token;
     const userResponse = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update-profile/', {
       email: user.value.email,
     }, {
       headers: {
-        'Authorization': `token ${authToken}` // 인증 토큰을 헤더에 추가합니다.
+        'Authorization': `token ${authToken}`
       }
     });
 
-    // 유저 정보 업데이트 요청
     const userInfoResponse = await axios.put('http://127.0.0.1:8000/api/v1/accounts/profile/update-info/', user_info.value, {
       headers: {
-        'Authorization': `token ${authToken}` // 인증 토큰을 헤더에 추가합니다.
+        'Authorization': `token ${authToken}`
       }
     });
 
-    // 응답 처리
     user.value = userResponse.data;
     user_info.value = userInfoResponse.data;
     alert('프로필이 성공적으로 업데이트되었습니다.');
-    router.push({name: 'home'})
-
+    router.push({ name: 'home' });
   } catch (error) {
     console.error('프로필 업데이트 중 오류가 발생했습니다:', error);
     alert('프로필 업데이트 중 오류가 발생했습니다.');
   }
 };
 
-
 onMounted(() => {
-  loadUserProfile()
-})
-
+  loadUserProfile();
+});
 </script>
 
 <style scoped>
