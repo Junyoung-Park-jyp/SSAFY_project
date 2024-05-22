@@ -2,7 +2,7 @@
   <div class="container mt-4 profile">
     <div class="card">
       <div class="card-header">
-        <h1 class="card-title">{{ user?.username }}님의 프로필 페이지</h1>
+        <h1 class="card-title" style="color:white">{{ user?.username }}님의 프로필 페이지</h1>
       </div>
       <div class="card-body">
         <div v-if="user">
@@ -37,12 +37,16 @@
           <button @click="updateProfile" class="btn btn-primary">수정하기</button>
         </div>
       </div>
-      <div class="card-footer" v-if="user && user.saving_products && user.deposit_products">
+      <div class="card-footer" v-if="user && user_info.saving_options && user_info.deposit_options">
         <h2>가입한 상품들</h2>
-        <ul>
-          <li v-for="product in user.saving_products" :key="product.id">{{ product.name }}</li>
-          <li v-for="product in user.deposit_products" :key="product.id">{{ product.name }}</li>
-        </ul>
+        <div class="product-list">
+          <div v-for="product in user_info.saving_options" :key="product.id" class="product-card">
+            <p><strong>{{ product.product }}</strong> - {{ product.save_trm }}개월</p>
+          </div>
+          <div v-for="product in user_info.deposit_options" :key="product.id" class="product-card">
+            <p><strong>{{ product.product }}</strong> - {{ product.save_trm }}개월</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -167,5 +171,26 @@ h1 {
 
 .btn-primary:hover {
   background-color: #005c99;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-card {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(100% - 20px);
+  box-sizing: border-box;
+  margin: 10px 0;
+}
+
+.product-card p {
+  margin: 0;
 }
 </style>

@@ -60,8 +60,10 @@ const annual_salary = ref(null)
 const store = useUserStore()
 const route = useRoute()
 const username = route.params.username
+const isSubmitting = ref(false)
 
-const UserInfo = function(){
+const UserInfo = () => {
+  isSubmitting.value = false
   const payload = {
       username: username,
       age: age.value,
@@ -70,17 +72,20 @@ const UserInfo = function(){
       annual_salary: annual_salary.value,
     }
   console.log(payload)
-  store.UserInfo(payload)
+  store.UserInfo(payload).then(() => {
+    isSubmitting.value = true
+  })
 }
-
 </script>
+
 <script>
 export default {
   name: 'UserInfo',
-  // Other component options
   beforeRouteLeave(to, from, next) {
     const confirmMessage = "상세 정보를 입력하지 않으면 추천이 제대로 이루어지지 않을 수 있습니다. 그래도 입력을 취소하시겠습니까?";
-    if (window.confirm(confirmMessage)) {
+    if (this.isSubmitting) {
+      next(); // Form is being submitted, allow navigation
+    } else if (window.confirm(confirmMessage)) {
       next(); // '예'를 누르면 페이지를 떠납니다.
     } else {
       next(false); // '아니오'를 누르면 페이지를 떠나지 않습니다.
@@ -88,6 +93,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Your existing CSS */
+</style>
+
 
 <style scoped>
 .userinfo {

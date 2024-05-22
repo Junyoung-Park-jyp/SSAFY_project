@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="option in depositDetail.options" :key="option.save_trm">
-          <td>{{ option.save_trm }}개월</td>
+          <td>{{ option.save_trm }}개월 <button @click="addDeposit(option.id)" class="btn" style="color: white; background-color: #004080;">가입하기</button></td>
           <td>{{ option.intr_rate }}%</td>
         </tr>
       </tbody>
@@ -21,8 +21,9 @@
     <div class="note">
       <p><strong>특이사항:</strong> {{ depositDetail.etc_note }}</p>
     </div>
-    <button class="btn btn-primary">가입하기</button>
-  </div>
+    <br>
+    
+  </div> 
   <div v-else class="loading">
     <p>Loading...</p>
   </div>
@@ -32,19 +33,37 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/stores/products';
-
+import { useUserStore } from '@/stores/users';
+import axios from 'axios';
 export default {
   setup() {
     const route = useRoute();
     const productStore = useProductStore();
+    const userStore = useUserStore();
+    const token = userStore.token
     const depositDetail = ref(null);
-
     onMounted(() => {
       const id = route.params.id;
       depositDetail.value = productStore.deposits.find(deposit => deposit.id === Number(id));
     });
-
-    return { depositDetail };
+    const addDeposit = function(pk) {
+      axios({
+        method: 'put',
+        url: 'http://127.0.0.1:8000/api/v1/accounts/add-deposit/',
+        data:{
+          pk : pk
+        },
+        headers: {
+          Authorization: `token ${token}`
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+        
+      })
+      .catch(err => console.log(err))
+    }
+    return { depositDetail, addDeposit };
   }
 };
 </script>

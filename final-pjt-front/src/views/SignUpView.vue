@@ -39,13 +39,34 @@ const password2 = ref(null)
 const email = ref(null)
 const store = useUserStore()
 
-const SignUp = function(){
+const SignUp = () => {
+  if (!username.value) {
+    alert('아이디를 입력해주세요.')
+    return
+  }
+  if (!password1.value) {
+    alert('비밀번호를 입력해주세요.')
+    return
+  }
+  if (!password2.value) {
+    alert('비밀번호 확인을 입력해주세요.')
+    return
+  }
+  if (password1.value !== password2.value) {
+    alert('비밀번호가 일치하지 않습니다.')
+    return
+  }
+  if (!email.value) {
+    alert('이메일을 입력해주세요.')
+    return
+  }
+
   const payload = {
-      username: username.value,
-      password1: password1.value,
-      password2: password2.value,
-      email: email.value,
-    }
+    username: username.value,
+    password1: password1.value,
+    password2: password2.value,
+    email: email.value,
+  }
   console.log(payload)
   store.SignUp(payload)
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="container map-container">
     <div class="search-bar">
-      <input type="text" v-model="cityInput" placeholder="시를 입력하세요" class="form-control">
-      <input type="text" v-model="districtInput" placeholder="구를 입력하세요" class="form-control">
+      <input type="text" v-model="cityInput" placeholder="검색할 지역을 입력하세요." class="form-control">
+      <!-- <input type="text" v-model="districtInput" placeholder="구를 입력하세요" class="form-control"> -->
       <select v-model="selectedOption" class="form-select">
         <option value="모든 은행">모든 은행</option>
         <option v-for="bank in uniqueBanks" :key="bank" :value="bank">{{ bank }}</option>

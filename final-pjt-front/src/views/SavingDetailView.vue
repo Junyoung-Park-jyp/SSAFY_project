@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="option in uniqueOptions" :key="option.save_trm">
-          <td>{{ option.save_trm }}개월</td>
+          <td>{{ option.save_trm }}개월 <button @click="addSaving(option)" class="btn" style="color: white; background-color: #004080; ">가입하기</button></td>
           <td>{{ option.intr_rate }}%</td>
         </tr>
       </tbody>
@@ -21,7 +21,8 @@
     <div class="note">
       <p><strong>특이사항:</strong> {{ savingDetail.etc_note }}</p>
     </div>
-    <button class="btn btn-primary">가입하기</button>
+    <br>
+    
   </div>
   <div v-else class="loading">
     <p>Loading...</p>
@@ -32,13 +33,16 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/stores/products';
+import { useUserStore } from '@/stores/users';
+import axios from 'axios';
 
 export default {
   setup() {
     const route = useRoute();
     const productStore = useProductStore();
+    const userStore = useUserStore();
+    const token = userStore.token
     const savingDetail = ref(null);
-
     onMounted(() => {
       const id = route.params.id;
       savingDetail.value = productStore.savings.find(saving => saving.id === Number(id));
@@ -55,7 +59,25 @@ export default {
       return options.sort((a, b) => a.save_trm - b.save_trm);
     });
 
-    return { savingDetail, uniqueOptions };
+    const addSaving = function(option){
+      axios({
+        method: 'put',
+        url: 'http://127.0.0.1:8000/api/v1/accounts/add-saving/',
+        data:{
+          pk : option.id
+        },
+        headers: {
+          Authorization: `token ${token}`
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+        alert(`${savingDetail.value.fin_prdt_nm}상품 가입이 완료되었습니다!`)
+      })
+      .catch(err => console.log(err))
+    }
+
+    return { savingDetail, uniqueOptions, addSaving };
   }
 };
 </script>

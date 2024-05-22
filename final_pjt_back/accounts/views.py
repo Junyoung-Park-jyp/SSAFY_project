@@ -45,3 +45,36 @@ def update_user_info(request):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def add_deposit(request):
+    user = request.user
+    user_info, created = UserInfo.objects.get_or_create(user=user)
+    deposit_option_id = request.data.get('pk')
+    if deposit_option_id:
+        try:
+            deposit_option = DepositOptions.objects.get(id=deposit_option_id)
+            user_info.deposit_options.add(deposit_option)
+            user_info.save()
+            return Response({'status': 'Deposit product added'}, status=status.HTTP_200_OK)
+        except DepositOptions.DoesNotExist:
+            return Response({'error': 'Deposit product not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response({'error': 'No deposit product ID provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def add_saving(request):
+    user = request.user
+    user_info, created = UserInfo.objects.get_or_create(user=user)
+    saving_option_id = request.data.get('pk')
+    if saving_option_id:
+        try:
+            saving_option = SavingOptions.objects.get(id=saving_option_id)
+            user_info.saving_options.add(saving_option)
+            user_info.save()
+            return Response({'status': 'Saving product added'}, status=status.HTTP_200_OK)
+        except SavingOptions.DoesNotExist:
+            return Response({'error': 'Saving product not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response({'error': 'No saving product ID provided'}, status=status.HTTP_400_BAD_REQUEST)
