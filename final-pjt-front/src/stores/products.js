@@ -13,6 +13,10 @@ export const useProductStore = defineStore('product', () => {
   const userStore = useUserStore();
   const token = computed(() => userStore.token);
   const isLogin = computed(() => !!token.value);
+  const popularOptions = ref({
+    mostPopularDepositOption: null,
+    mostPopularSavingOption: null
+  });
 
   const getAuthHeaders = () => {
     return {
@@ -20,6 +24,16 @@ export const useProductStore = defineStore('product', () => {
         Authorization: `Token ${token.value}`
       }
     };
+  };
+
+  const getPopularOptions = async () => {
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/products/popular-options/', getAuthHeaders());
+      popularOptions.value.mostPopularDepositOption = res.data.most_popular_deposit_option;
+      popularOptions.value.mostPopularSavingOption = res.data.most_popular_saving_option;
+    } catch (error) {
+      console.error('Failed to fetch popular options:', error);
+    }
   };
 
   const getPosts = async () => {
@@ -131,6 +145,8 @@ export const useProductStore = defineStore('product', () => {
     editComment,
     toggleLikeComment,
     getPosts,
+    popularOptions,
+    getPopularOptions,
     posts,
     token,
     isLogin

@@ -77,7 +77,7 @@ export default {
       showChatbot: false,
       userMessage: '',
       messages: [
-        { text: '안녕하세요! 한진봇입니다! 무엇을 도와드릴까요?', user: false }
+        { text: '병신아 무엇을 도와드릴까요?', user: false }
       ]
     };
   },

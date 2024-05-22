@@ -6,4 +6,5 @@ urlpatterns = [
     path('depositproducts/<int:pk>/', views.depositproduct_detail, name='depositproduct_detail'),
     path('savingproducts/', views.savingproducts_list, name='savingproducts_list'),
     path('savingproducts/<int:pk>/', views.savingproduct_detail, name='savingproduct_detail'),
+    path('popular-options/', views.PopularOptionsView.as_view(), name='popular-options')
 ]
