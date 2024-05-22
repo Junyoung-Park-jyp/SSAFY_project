@@ -13,14 +13,15 @@ def user_profile(request):
     serializer = UserSerializer(user)
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['POST', 'PUT'])
 @permission_classes([IsAuthenticated])
 def user_info(request):
-    user = request.user  # 요청을 보낸 사용자의 정보를 가져옴
-    serializer = UserInfoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(user=user)  # 요청을 보낸 사용자 정보를 저장
-        return Response(serializer.data)
+    if request.method == 'POST':
+        user = request.user  # 요청을 보낸 사용자의 정보를 가져옴
+        serializer = UserInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)  # 요청을 보낸 사용자 정보를 저장
+            return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
@@ -44,3 +45,23 @@ def update_user_info(request):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+from django.contrib.auth import authenticate, login
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        login(request, user)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)

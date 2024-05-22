@@ -2,47 +2,50 @@
   <div class="login-container">
     <div class="card">
       <div class="card-header">
-        <h1 class="card-title">로그인 페이지</h1>
+        <h1 class="card-title">로그인</h1>
       </div>
       <div class="card-body">
-        <form @submit.prevent="LogIn">
-          <div class="mb-3">
-            <label for="username" class="form-label">아이디:</label>
-            <input type="text" id="username" class="form-control" v-model.trim="username" required>
+        <form @submit.prevent="logIn">
+          <div class="form-group">
+            <label for="username">아이디:</label>
+            <input type="text" v-model="username" id="username" required />
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">비밀번호:</label>
-            <input type="password" id="password" class="form-control" v-model.trim="password" required>
+          <div class="form-group">
+            <label for="password">비밀번호:</label>
+            <input type="password" v-model="password" id="password" required />
           </div>
           <button type="submit" class="btn btn-primary">로그인</button>
+          <p v-if="userStore.errorMessage" class="error-message">{{ userStore.errorMessage }}</p>
         </form>
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/users'
-import { useRouter } from 'vue-router'
 
-const username = ref('')
-const password = ref('')
-const store = useUserStore()
-const router = useRouter()
+export default {
+  setup() {
+    const username = ref('')
+    const password = ref('')
+    const userStore = useUserStore()
 
-const LogIn = async () => {
-  if (!username.value || !password.value) {
-    alert('아이디와 비밀번호를 모두 입력해주세요.')
-    return
-  }
+    const logIn = async () => {
+      if (!username.value || !password.value) {
+        userStore.errorMessage = '아이디와 비밀번호를 입력해주세요.'
+      } else {
+        await userStore.LogIn({ username: username.value, password: password.value });
+      }
+    }
 
-  try {
-    await store.LogIn({ username: username.value, password: password.value })
-    router.push({ name: 'home' })
-  } catch (err) {
-    alert('로그인에 실패했습니다.')
-    console.error(err)
+    return {
+      username,
+      password,
+      userStore,
+      logIn
+    }
   }
 }
 </script>
@@ -59,9 +62,8 @@ const LogIn = async () => {
 
 .card {
   width: 100%;
-  max-width: 600px; /* 기존 크기 유지 */
+  max-width: 400px;
   padding: 20px;
-  margin-bottom: 20%;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -83,40 +85,48 @@ const LogIn = async () => {
   font-weight: bold;
 }
 
-.form-label {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 5px;
+.card-body {
+  padding: 20px;
 }
 
-.form-control {
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #005c99;
+}
+
+.form-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
-  margin-bottom: 15px;
-  transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-  border-color: #005c99;
-  box-shadow: 0 0 5px rgba(0, 92, 153, 0.5);
 }
 
 .btn-primary {
+  display: inline-block;
   width: 100%;
-  padding: 10px;
+  padding: 12px 24px;
   background-color: #005c99;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .btn-primary:hover {
   background-color: #004080;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
 }
 </style>
