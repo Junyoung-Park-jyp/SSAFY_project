@@ -47,7 +47,7 @@
       </button>
       <div v-if="showChatbot" class="chatbot-window">
         <div class="chatbot-header">
-          <h3>대화</h3>
+          <h3>Chat with Bot</h3>
           <button class="close-btn" @click="toggleChatbot">×</button>
         </div>
         <div class="chatbot-messages">
@@ -56,8 +56,8 @@
           </div>
         </div>
         <form @submit.prevent="sendMessage">
-          <input type="text" v-model="userMessage" placeholder="질문을 입력하세요..." required>
-          <button type="submit">보내기</button>
+          <input type="text" v-model="userMessage" placeholder="Enter your question..." required>
+          <button type="submit">Send</button>
         </form>
       </div>
     </div>
@@ -69,6 +69,7 @@
 
 <script>
 import axios from 'axios';
+import { useUserStore } from '@/stores/users';
 
 export default {
   name: 'HomeView',
@@ -76,9 +77,7 @@ export default {
     return {
       showChatbot: false,
       userMessage: '',
-      messages: [
-        { text: '병신아 무엇을 도와드릴까요?', user: false }
-      ]
+      messages: []
     };
   },
   methods: {
@@ -86,22 +85,32 @@ export default {
       this.showChatbot = !this.showChatbot;
     },
     async sendMessage() {
+      const userStore = useUserStore();
+      const userlist = await userStore.getProfile(); // 사용자 프로필을 비동기로 가져옴
       const userMsg = this.userMessage;
       this.messages.push({ text: userMsg, user: true });
       this.userMessage = '';
-
+      const user = userlist.user_info
       try {
-        const response = await axios.post('http://localhost:3000/api/chat', { message: userMsg });
+        const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
+          message: userMsg,
+          user: {
+            age: user.age,
+            current_balance: user.current_balance,
+            annual_salary: user.annual_salary,
+            saving_preference: user.saving_preference,
+            favorite_bank: user.favorite_bank
+          }
+        });
         this.messages.push({ text: response.data.reply, user: false });
       } catch (error) {
         console.error('Error sending message:', error);
-        this.messages.push({ text: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.', user: false });
+        this.messages.push({ text: 'Server error occurred. Please try again later.', user: false });
       }
     }
   }
 };
 </script>
-
 <style scoped>
 .home {
   text-align: center;
