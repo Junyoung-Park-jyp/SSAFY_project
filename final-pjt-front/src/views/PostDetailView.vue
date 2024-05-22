@@ -175,20 +175,26 @@ export default {
 
 <style scoped>
 .post-detail {
-  background: #ffffff;
+  background: linear-gradient(to right, #ffffff, #e6f7ff);
   padding: 40px;
-  border-radius: 15px;
+  border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   margin: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.post-detail:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 .post-detail h1 {
-  font-size: 32px;
+  font-size: 36px;
   color: #005c99;
   margin-bottom: 20px;
-  border-bottom: 2px solid #005c99;
+  border-bottom: 3px solid #005c99;
   padding-bottom: 10px;
 }
 
@@ -217,7 +223,8 @@ export default {
   color: #e60000;
 }
 
-.edit-button {
+.edit-button,
+.delete-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -227,7 +234,8 @@ export default {
   transition: color 0.3s ease;
 }
 
-.edit-button:hover {
+.edit-button:hover,
+.delete-button:hover {
   color: #004080;
 }
 
@@ -239,7 +247,7 @@ export default {
   color: #005c99;
   font-size: 24px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #005c99;
+  border-bottom: 3px solid #005c99;
   padding-bottom: 10px;
 }
 
@@ -247,6 +255,15 @@ export default {
   border-bottom: 1px solid #ddd;
   padding: 15px 0;
   margin-bottom: 15px;
+  border-radius: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.comment:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .comment p {
@@ -275,23 +292,42 @@ export default {
   margin-top: 20px;
 }
 
+.comment-form h3 {
+  color: #005c99;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .comment-form textarea {
   width: 100%;
   height: 100px;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   margin-bottom: 10px;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .comment-form textarea:focus {
   border-color: #005c99;
+  box-shadow: 0 0 10px rgba(0, 92, 153, 0.2);
 }
 
-.comment-form .btn-primary {
-  width: 100%;
+.comment-form button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #005c99;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.comment-form button:hover {
+  background-color: #004080;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary {
@@ -300,7 +336,7 @@ export default {
   background-color: #005c99;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
 }
@@ -316,7 +352,7 @@ export default {
   background-color: #ccc;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
   margin-top: 20px;
@@ -337,6 +373,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: opacity 0.3s;
 }
 
 .modal-content {
@@ -345,6 +382,13 @@ export default {
   border-radius: 15px;
   width: 400px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.modal-content:hover {
+  transform: scale(1);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
 }
 
 .modal h2 {
@@ -352,20 +396,49 @@ export default {
   color: #005c99;
 }
 
-.modal input,
 .modal textarea {
   width: 100%;
+  height: 100px;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 16px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.modal input:focus,
 .modal textarea:focus {
   border-color: #005c99;
+  box-shadow: 0 0 10px rgba(0, 92, 153, 0.2);
+}
+
+.modal button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.modal button:first-of-type {
+  background-color: #005c99;
+  color: white;
+}
+
+.modal button:first-of-type:hover {
+  background-color: #004080;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal button:last-of-type {
+  background-color: #ccc;
+  color: white;
+  margin-left: 10px;
+}
+
+.modal button:last-of-type:hover {
+  background-color: #999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 </style>
-

@@ -20,7 +20,6 @@
       </ul>
     </div>
   </div>
-  
 </template>
 
 <script setup>
@@ -29,7 +28,7 @@ import MapComponent from '@/components/MapComponent.vue';
 
 const kakaoMapApiKey = import.meta.env.VITE_KAKAO_MAP_API_KEY;
 
-let map, geocoder;
+let map, geocoder, infowindow;
 const cityInput = ref('');
 const districtInput = ref('');
 const selectedOption = ref('모든 은행');
@@ -49,6 +48,7 @@ onMounted(() => {
       };
       map = new window.kakao.maps.Map(container, options);
       geocoder = new window.kakao.maps.services.Geocoder();
+      infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
     });
   };
   document.head.appendChild(script);
@@ -113,9 +113,7 @@ const addMarker = (place) => {
   markers.push(marker);
   
   window.kakao.maps.event.addListener(marker, 'click', () => {
-    const infowindow = new window.kakao.maps.InfoWindow({
-      content: `<div style="padding:5px;">${place.place_name}</div>`
-    });
+    infowindow.setContent(`<div style="padding-bottom:20px; line-height:20px">${place.place_name}</div>`);
     infowindow.open(map, marker);
   });
 };

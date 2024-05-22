@@ -46,19 +46,27 @@ export default {
 
 <style scoped>
 .create-post {
-  background: white;
+  background: linear-gradient(to right, #ffffff, #e6f7ff);
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   margin: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.create-post:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 h1 {
-  color: #002b5c;
-  font-size: 32px;
+  color: #005c99;
+  font-size: 36px;
   font-weight: bold;
   margin-bottom: 20px;
+  border-bottom: 3px solid #005c99;
+  padding-bottom: 10px;
 }
 
 .post-form {
@@ -71,28 +79,36 @@ h1 {
 }
 
 .form-label {
-  font-size: 16px;
-  color: #555;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
 }
 
 .form-control {
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #005c99;
+  box-shadow: 0 0 10px rgba(0, 92, 153, 0.2);
 }
 
 .btn-primary {
-  padding: 10px 20px;
-  background-color: #002b5c;
+  padding: 12px 24px;
+  background-color: #005c99;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .btn-primary:hover {
-  background-color: #005c99;
+  background-color: #004080;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -1,161 +1,140 @@
 <template>
-    <div>
-      <button @click="toggleChatbot" class="chatbot-button">
-        <img src="@/assets/chatbot-icon.png" alt="Chatbot Icon">
-      </button>
-      <div v-if="showChatbot" class="chatbot-window" ref="chatWindow">
-        <div class="chatbot-header">
-          <h2>대화</h2>
-          <button @click="toggleChatbot" class="close-button">×</button>
-        </div>
-        <div class="chatbot-body">
-          <div class="message" v-for="(message, index) in messages" :key="index">
-            <div class="message-content" :class="message.type">
-              <p>{{ message.content }}</p>
-            </div>
+  <div class="chat-container">
+    <div class="chat-box">
+      <div class="chat-log" ref="chatLog">
+        <div v-for="message in messages" :key="message.id" :class="['message', message.sender]">
+          <div class="message-content">
+            <p>{{ message.text }}</p>
           </div>
         </div>
-        <div class="chatbot-footer">
-          <input type="text" v-model="userMessage" placeholder="질문을 입력하세요..." @keyup.enter="sendMessage">
-          <button @click="sendMessage">보내기</button>
-        </div>
       </div>
+      <form @submit.prevent="sendMessage" class="input-box">
+        <input type="text" v-model="userInput" placeholder="질문을 입력하세요..." class="form-control" />
+        <button type="submit" class="btn btn-primary">전송</button>
+      </form>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  export default {
-    data() {
-      return {
-        showChatbot: false,
-        userMessage: '',
-        messages: [
-          { type: 'bot', content: '안녕하세요! 무엇을 도와드릴까요?' }
-        ]
-      };
-    },
-    methods: {
-      toggleChatbot() {
-        this.showChatbot = !this.showChatbot;
-      },
-      async sendMessage() {
-        if (this.userMessage.trim() === '') return;
-        this.messages.push({ type: 'user', content: this.userMessage });
-        const message = this.userMessage;
-        this.userMessage = '';
-        try {
-          const response = await axios.post('http://localhost:3000/api/chat', { message });
-          this.messages.push({ type: 'bot', content: response.data.reply });
-        } catch (error) {
-          this.messages.push({ type: 'bot', content: '서버 오류가 발생했습니다. 나중에 다시 시도해주세요.' });
-        }
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, nextTick } from 'vue'
+import { useProductStore } from '@/stores/products'
+import { useUserStore } from '@/stores/users'
+import axios from 'axios'
+
+const userInput = ref('')
+const messages = ref([
+  { id: 1, sender: 'bot', text: '안녕하세요! 무엇을 도와드릴까요?' }
+])
+const productStore = useProductStore()
+const userStore = useUserStore()
+const chatLog = ref(null)
+
+const sendMessage = async () => {
+  const userMessage = userInput.value.trim()
+  if (userMessage) {
+    messages.value.push({ id: Date.now(), sender: 'user', text: userMessage })
+    userInput.value = ''
+    await nextTick()
+    chatLog.value.scrollTop = chatLog.value.scrollHeight
+
+    const response = await getChatBotResponse(userMessage)
+    messages.value.push({ id: Date.now(), sender: 'bot', text: response })
+    await nextTick()
+    chatLog.value.scrollTop = chatLog.value.scrollHeight
+  }
+}
+
+const getChatBotResponse = async (message) => {
+  try {
+    const user = userStore.user
+    const response = await axios.post('http://127.0.0.1:8000/api/v1/chatbot/', {
+      message,
+      user: {
+        age: user.age,
+        bank: user.bank
       }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .chatbot-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #005c99;
-    border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
+    })
+    return response.data.reply
+  } catch (error) {
+    console.error(error)
+    return '죄송합니다, 현재 답변을 드릴 수 없습니다.'
   }
-  
-  .chatbot-button img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .chatbot-window {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: 400px;
-    max-height: 600px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    resize: both;
-    min-width: 300px;
-    min-height: 200px;
-  }
-  
-  .chatbot-header {
-    background: #005c99;
-    color: white;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  .chatbot-body {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-  }
-  
-  .message-content {
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 80%;
-    word-wrap: break-word;
-  }
-  
-  .message-content.bot {
-    background: #f1f1f1;
-    align-self: flex-start;
-  }
-  
-  .message-content.user {
-    background: #005c99;
-    color: white;
-    align-self: flex-end;
-  }
-  
-  .chatbot-footer {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-  }
-  
-  .chatbot-footer input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-  
-  .chatbot-footer button {
-    padding: 10px 20px;
-    background-color: #005c99;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  </style>
-  
+}
+
+onMounted(() => {
+  chatLog.value.scrollTop = chatLog.value.scrollHeight
+})
+</script>
+
+<style scoped>
+.chat-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.chat-box {
+  width: 400px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.chat-log {
+  height: 300px;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #e9e9e9;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+.message.user .message-content {
+  background-color: #007bff;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 75%;
+  margin-left: auto;
+}
+
+.message.bot .message-content {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 75%;
+}
+
+.input-box {
+  display: flex;
+  padding: 10px;
+  background-color: #e9e9e9;
+}
+
+.form-control {
+  flex-grow: 1;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.btn-primary {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+</style>

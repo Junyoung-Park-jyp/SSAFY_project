@@ -1,165 +1,104 @@
 <template>
-  <div class="community-container">
-    <div class="card">
-      <div class="card-header">
-        <h1 class="card-title">커뮤니티 게시판</h1>
+  <div class="container mt-4">
+    <div class="card shadow-lg rounded-3d">
+      <div class="card-header bg-primary text-white rounded-top-3d">
+        <h2 class="card-title mb-0">커뮤니티 게시판</h2>
       </div>
       <div class="card-body">
-        
-        <div v-if="posts.length" class="post-list">
-          <h2>게시물 목록</h2>
-          <ul>
-            <li v-for="post in posts" :key="post.id" class="post-item">
-              <RouterLink :to="{ name: 'post', params: { postId: post.id }}" class="post-link">
-                <span class="post-title">{{ post.title }}</span>
-                <span class="comment-count">댓글: {{ post.comment_count }}</span>
-              </RouterLink>
-            </li>
-          </ul>
-          <RouterLink :to="{ name: 'create' }" class="btn btn-primary">게시글 작성</RouterLink>
-        </div>
-        <div v-else>
-          <p>게시물이 없습니다.</p>
-        </div>
+        <h4>게시물 목록</h4>
+        <ul class="list-group">
+          <li v-for="post in posts" :key="post.id" class="list-group-item d-flex justify-content-between align-items-center rounded-3d shadow-sm">
+            <router-link :to="'/community/' + post.id" class="text-decoration-none text-dark">{{ post.title }}</router-link>
+            <span class="badge bg-primary rounded-pill">댓글: {{ post.comments.length }}</span>
+          </li>
+        </ul>
+        <router-link to="/create" class="btn btn-primary mt-3 shadow-lg rounded-3d">게시글 작성</router-link>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue';
-import { useProductStore } from '@/stores/products';
+import axios from 'axios';
 
-export default {
-  setup() {
-    const posts = ref([]);
-    const productStore = useProductStore();
+const posts = ref([]);
 
-    const fetchPosts = async () => {
-      try {
-        await productStore.getPosts();
-        posts.value = productStore.posts;
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-      }
-    };
-
-    onMounted(fetchPosts);
-
-    return {
-      posts,
-    };
-  },
+const loadPosts = async () => {
+  const response = await axios.get('http://127.0.0.1:8000/api/v1/community/posts/');
+  posts.value = response.data;  
 };
+
+onMounted(() => {
+  loadPosts();
+});
 </script>
 
 <style scoped>
-.community-container {
-  margin-left: auto;
-  background: white;
+.container {
+  background: linear-gradient(to right, #e0eafc, #cfdef3);
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .card {
-  width: 100%;
-  max-width: 900px;
-  padding: 20px;
-  margin-bottom: 20px;
+  border: none;
   border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transform: translateZ(0);
 }
 
 .card-header {
-  text-align: center;
-  margin-bottom: 20px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .card-title {
-  font-size: 32px;
-  color: #005c99;
+  font-size: 24px;
   font-weight: bold;
+  margin: 0;
 }
 
-.card-body {
-  padding: 20px;
+.list-group-item {
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.3s;
 }
 
-h2 {
-  color: #005c99;
-  font-size: 28px;
-  margin-bottom: 20px;
+.list-group-item:hover {
+  transform: translateY(-5px);
 }
 
 .btn-primary {
-  display: inline-block;
-  padding: 12px 24px;
-  background-color: #005c99;
-  color: white;
+  background-color: #007bff;
   border: none;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 15px;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 .btn-primary:hover {
-  background-color: #004080;
+  background-color: #0056b3;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+h2, h4 {
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.rounded-3d {
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
 }
 
-.post-list {
-  margin-top: 20px;
-}
-
-.post-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  list-style: none;
-  transition: background-color 0.3s;
-}
-
-.post-item:hover {
-  background-color: #f0f8ff;
-}
-
-.post-link {
-  text-decoration: none;
-  color: #005c99;
-  font-size: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.post-link:hover {
-  color: #002b5c;
-}
-
-.post-title {
-  font-weight: bold;
-}
-
-.comment-count {
-  color: #888;
-  font-size: 18px;
-}
-
-.no-posts {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #777;
+.rounded-3d:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
 }
 </style>
