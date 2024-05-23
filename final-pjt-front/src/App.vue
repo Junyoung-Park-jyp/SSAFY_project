@@ -53,43 +53,136 @@ const logOut = async () => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 .navbar {
-  background: linear-gradient(to right, #002b5c, #005c99);
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  font-family: 'Montserrat', sans-serif;
+  border-bottom: 4px solid #3282b8;
 }
 
 .nav-logo {
-  width: 50px;
+  width: 60px;
   height: auto;
-  margin-right: 10px;
+  margin-right: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.nav-logo:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .navbar-brand {
   display: flex;
   align-items: center;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: white;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 .nav-link {
   color: white !important;
-  margin: 0 10px;
+  margin: 0 15px;
+  position: relative;
+  padding: 5px 0;
+  font-weight: 700;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 
 .nav-link:hover {
-  color: #cccccc !important;
+  color: #ffd700 !important;
+  transform: scale(1.1);
 }
 
 .nav-link.btn {
   background: none;
-  border: none;
+  border: 2px solid white;
   color: white;
   cursor: pointer;
+  padding: 5px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 30px;
 }
 
 .nav-link.btn:hover {
-  color: #cccccc;
+  color: #0f4c75;
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.nav-link.btn:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 22px;
+  }
+
+  .nav-link {
+    margin: 10px 0;
+  }
+}
+
+.nav-item.active .nav-link {
+  color: #ffd700 !important;
+}
+
+.navbar-nav.ml-auto {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-collapse {
+  justify-content: flex-end;
+}
+
+@keyframes navLinkGlow {
+  0% {
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+}
+
+.navbar-brand:hover {
+  animation: navLinkGlow 1s infinite;
+}
+
+.nav-link.active {
+  color: #ffd700 !important;
+}
+
+.nav-link.active::after {
+  width: 100%;
 }
 </style>
+
+
+
