@@ -5,7 +5,7 @@
         <h1 class="card-title" style="color:white;">{{ username }}님 가입을 환영합니다!</h1>
       </div>
       <div class="card-body">
-        <form @submit.prevent="UserInfo">
+        <form @submit.prevent="handleSubmit">
           <div class="mb-3">
             <label for="current_balance" class="form-label">현재 가진 금액:</label>
             <input type="number" id="current_balance" class="form-control" v-model.trim="current_balance">
@@ -51,7 +51,6 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/users'
-import { storeToRefs } from 'pinia'
 
 const age = ref(null)
 const bank = ref(null)
@@ -59,9 +58,21 @@ const current_balance = ref(null)
 const annual_salary = ref(null)
 const store = useUserStore()
 const route = useRoute()
+const router = useRouter()
 const username = route.params.username
 
-const UserInfo = function(){
+const handleSubmit = function(){
+  if (!current_balance.value || !annual_salary.value || !age.value || !bank.value) {
+    const confirmMessage = "상세 정보를 입력하지 않으면 추천이 제대로 이루어지지 않을 수 있습니다. 그래도 계속하시겠습니까?";
+    if (window.confirm(confirmMessage)) {
+      proceedWithRegistration();
+    }
+  } else {
+    proceedWithRegistration();
+  }
+}
+
+const proceedWithRegistration = () => {
   const payload = {
       username: username,
       age: age.value,
@@ -69,25 +80,9 @@ const UserInfo = function(){
       current_balance: current_balance.value,
       annual_salary: annual_salary.value,
     }
-  console.log(payload)
-  store.UserInfo(payload)
+  store.UserInfo(payload);
+  router.push({ name: 'home' });
 }
-
-</script>
-<script>
-export default {
-  name: 'UserInfo',
-  beforeRouteLeave(to, from, next) {
-    const confirmMessage = "상세 정보를 입력하지 않으면 추천이 제대로 이루어지지 않을 수 있습니다.";
-    if (this.isSubmitting) {
-      next(); // Form is being submitted, allow navigation
-    } else if (window.confirm(confirmMessage)) {
-      next(); // '예'를 누르면 페이지를 떠납니다.
-    } else {
-      next(false); // '아니오'를 누르면 페이지를 떠나지 않습니다.
-    }
-  },
-};
 </script>
 
 <style scoped>

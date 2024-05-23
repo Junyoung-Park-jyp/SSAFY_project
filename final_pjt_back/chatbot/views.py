@@ -50,38 +50,39 @@ def chatbot(request):
             response_message += "\n적금 상품:\n"
             response_message += f"{popular_saving.product.kor_co_nm} - {popular_saving.product} \n"
             response_message += "\n예금 상품:\n"
-        response_message += f"{popular_deposit.product.kor_co_nm} - {popular_deposit.product}% \n\n\n"        
-        response_message += "회원정보를 바탕으로 추천해드리는 상품입니다."
-        saving_products = SavingProducts.objects.all()
-        deposit_products = DepositProducts.objects.all()
-        if age is not None:
-            if 'saving' in keywords or '예금' in keywords:
-                saving_products = saving_products.filter(age_min__lte=age, age_max__gte=age)
-            if 'deposit' in keywords or '적금' in keywords:
-                deposit_products = deposit_products.filter(age_min__lte=age, age_max__gte=age)
-
-        if bank:
-            saving_products = saving_products.filter(kor_co_nm=bank)
-            deposit_products = deposit_products.filter(kor_co_nm=bank)
-        
-    # Convert queryset to dataframe
-        saving_df = pd.DataFrame(list(saving_products.values()))
-        deposit_df = pd.DataFrame(list(deposit_products.values()))
-        saving_recommendations = saving_df.head(10).to_dict('records') if not saving_df.empty else []
-        deposit_recommendations = deposit_df.head(10).to_dict('records') if not deposit_df.empty else []
-        
-        if saving_recommendations:
-            response_message += "\n\n적금 상품:\n"
-            for product in saving_recommendations:
-                response_message += f"{bank} - {product['fin_prdt_nm']} \n"
-
-
-        elif deposit_recommendations:
-            response_message += "\n예금상품:\n"
-            for product in deposit_recommendations:
-                response_message += f"- {product['fin_prdt_nm']} \n"
         else:
-            response_message += "상품이 없다.\n"
+            response_message += f"{popular_deposit.product.kor_co_nm} - {popular_deposit.product}% \n\n\n"        
+            response_message += "회원정보를 바탕으로 추천해드리는 상품입니다."
+            saving_products = SavingProducts.objects.all()
+            deposit_products = DepositProducts.objects.all()
+            # if age is not None:
+            #     if 'saving' in keywords or '예금' in keywords:
+            #         saving_products = saving_products.filter(age_min__lte=age, age_max__gte=age)
+            #     if 'deposit' in keywords or '적금' in keywords:
+            #         deposit_products = deposit_products.filter(age_min__lte=age, age_max__gte=age)
+
+            if bank:
+                saving_products = saving_products.filter(kor_co_nm=bank)
+                deposit_products = deposit_products.filter(kor_co_nm=bank)
+            
+        # Convert queryset to dataframe
+            saving_df = pd.DataFrame(list(saving_products.values()))
+            deposit_df = pd.DataFrame(list(deposit_products.values()))
+            saving_recommendations = saving_df.head(10).to_dict('records') if not saving_df.empty else []
+            deposit_recommendations = deposit_df.head(10).to_dict('records') if not deposit_df.empty else []
+            
+            if saving_recommendations:
+                response_message += "\n\n적금 상품:\n"
+                for product in saving_recommendations:
+                    response_message += f"{bank} - {product['fin_prdt_nm']} \n"
+
+
+            elif deposit_recommendations:
+                response_message += "\n예금상품:\n"
+                for product in deposit_recommendations:
+                    response_message += f"- {product['fin_prdt_nm']} \n"
+            else:
+                response_message += "상품이 없다.\n"
     else:
         # Call OpenAI API for general responses using the new interface
         try:
