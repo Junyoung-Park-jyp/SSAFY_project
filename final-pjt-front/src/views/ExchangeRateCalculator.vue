@@ -138,7 +138,7 @@ h1 {
 
 .form-group {
   margin-bottom: 30px;
-  animation: fadeInUp 0.5s ease-in-out;
+  animation: fadeInUp 2s ease-in-out;
 }
 
 @keyframes fadeInUp {
@@ -166,7 +166,7 @@ h1 {
   border-radius: 10px;
   font-size: 18px;
   margin-bottom: 10px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 2s, box-shadow 2s;
 }
 
 .form-control:focus {
@@ -182,7 +182,7 @@ h1 {
   margin-top: 20px;
   font-size: 18px;
   color: #002b5c;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 2s ease, box-shadow 2s ease;
 }
 
 .result-group:hover {
@@ -201,7 +201,7 @@ h1 {
 
 .alert-danger {
   background-color: #d9534f;
-  animation: shake 0.5s ease;
+  animation: shake 2s ease;
 }
 
 @keyframes shake {

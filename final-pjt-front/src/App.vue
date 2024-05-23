@@ -33,6 +33,9 @@
               <li class="nav-item">
                 <RouterLink class="nav-link" :to="{name: 'exchangeRateCalculator'}">Currency Converter</RouterLink>
               </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link" :to="{name: 'bankclerk'}">Bank Clerk</RouterLink>
+              </li>
             </ul>
           </div>
         </div>

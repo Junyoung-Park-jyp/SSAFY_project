@@ -2,6 +2,23 @@ from django.db import models
 
 # Create your models here.
 
+from django.db import models
+
+class SavingProducts(models.Model):
+    fin_prdt_cd = models.TextField(unique=True)
+    kor_co_nm = models.TextField()
+    fin_prdt_nm = models.TextField()
+    etc_note = models.TextField()
+    join_deny = models.IntegerField()
+    join_member = models.TextField()
+    join_way = models.TextField()
+    spcl_cnd = models.TextField()
+    age_min = models.IntegerField(default=0)  # 필드 추가
+    age_max = models.IntegerField(default=0)  # 필드 추가
+
+    def __str__(self):
+        return self.fin_prdt_nm
+
 class DepositProducts(models.Model):
     fin_prdt_cd = models.TextField(unique=True)
     kor_co_nm = models.TextField()
@@ -11,10 +28,12 @@ class DepositProducts(models.Model):
     join_member = models.TextField()
     join_way = models.TextField()
     spcl_cnd = models.TextField()
-    age_min = models.IntegerField()
-    age_max = models.IntegerField()
+    age_min = models.IntegerField(default=0)  # 필드 추가
+    age_max = models.IntegerField(default=0)  # 필드 추가
+
     def __str__(self):
         return self.fin_prdt_nm
+
 
 
 class DepositOptions(models.Model):
@@ -28,20 +47,6 @@ class DepositOptions(models.Model):
     def __str__(self):
         return f'{self.product} - {self.intr_rate_type_nm}'
 
-
-class SavingProducts(models.Model):
-    fin_prdt_cd = models.TextField(unique=True)
-    kor_co_nm = models.TextField()
-    fin_prdt_nm = models.TextField()
-    etc_note = models.TextField()
-    join_deny = models.IntegerField()
-    join_member = models.TextField()
-    join_way = models.TextField()
-    spcl_cnd = models.TextField()
-    age_min = models.IntegerField()
-    age_max = models.IntegerField()
-    def __str__(self):
-        return self.fin_prdt_nm
 
 
 class SavingOptions(models.Model):

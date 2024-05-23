@@ -12,6 +12,8 @@ load_dotenv()
 # OpenAI API 키 설정
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+
+
 def extract_keywords(message):
     keywords = re.findall(r'\b\w+\b', message.lower())
     return keywords

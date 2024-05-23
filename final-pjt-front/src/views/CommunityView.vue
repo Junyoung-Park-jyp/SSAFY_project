@@ -6,6 +6,7 @@
       </div>
       <div class="card-body">
         <h4>게시물 목록</h4>
+        <br>
         <ul class="list-group">
           <li v-for="post in posts" :key="post.id" class="list-group-item d-flex justify-content-between align-items-center rounded-3d shadow-sm">
             <router-link :to="'/community/' + post.id" class="text-decoration-none text-dark">{{ post.title }}</router-link>
@@ -43,13 +44,20 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
 }
 
 .container {
-  background: linear-gradient(to right, #e0eafc, #cfdef3);
+  width: 100%;
+  max-width: 1200px;
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: white;
+  margin: 20px auto;
 }
 
 .card {
@@ -108,6 +116,8 @@ body {
 
 .text-dark {
   color: #333 !important;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .badge {
@@ -120,7 +130,7 @@ body {
 }
 
 .btn-primary {
-  background-color: #0f4c75;
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
   border: none;
   padding: 10px 20px;
   border-radius: 30px;
@@ -128,6 +138,7 @@ body {
   transition: background-color 0.3s, box-shadow 0.3s;
   font-size: 18px;
   font-weight: bold;
+  color: white;
 }
 
 .btn-primary:hover {
@@ -155,7 +166,6 @@ h2, h4 {
   transform: translateY(-5px);
 }
 
-/* Additional effects for buttons and badges */
 .btn-primary:active {
   background-color: #0056b3;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -166,7 +176,6 @@ h2, h4 {
   background-color: #0056b3;
 }
 
-/* Adding animation for list items */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -182,7 +191,6 @@ h2, h4 {
   animation: fadeInUp 0.5s ease-in-out;
 }
 
-/* Button glow effect */
 @keyframes glow {
   0% {
     box-shadow: 0 0 5px #0f4c75, 0 0 10px #0f4c75, 0 0 20px #0f4c75, 0 0 40px #0f4c75;
@@ -198,4 +206,31 @@ h2, h4 {
 .btn-primary:hover {
   animation: glow 1.5s infinite;
 }
+
+/* New Styles for Comment and Back Buttons */
+.btn-secondary {
+  background-color: #cccccc;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-left: 10px;
+}
+
+.btn-secondary:hover {
+  background-color: #999999;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+.btn-secondary:active {
+  background-color: #666666;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
+}
+
 </style>

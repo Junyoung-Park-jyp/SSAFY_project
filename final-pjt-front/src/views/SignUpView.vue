@@ -132,7 +132,7 @@ const SignUp = () => {
 .btn-primary {
   width: 100%;
   padding: 10px;
-  background-color: #005c99;
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
   color: white;
   border: none;
   border-radius: 5px;
