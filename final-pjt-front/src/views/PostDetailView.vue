@@ -174,15 +174,47 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
 .post-detail {
-  background: linear-gradient(to right, #ffffff, #e6f7ff);
+  background: linear-gradient(to bottom right, #ffffff, #e6f7ff);
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 20px 0;
+  font-family: 'Montserrat', sans-serif;
   color: #333;
   transition: transform 0.3s, box-shadow 0.3s;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .post-detail:hover {
@@ -196,6 +228,16 @@ export default {
   margin-bottom: 20px;
   border-bottom: 3px solid #005c99;
   padding-bottom: 10px;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .post-detail p {
@@ -212,6 +254,12 @@ export default {
   color: #ff4d4d;
   font-size: 24px;
   transition: transform 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.like-button span {
+  margin-right: 8px;
 }
 
 .like-button:hover {
@@ -290,6 +338,18 @@ export default {
 
 .comment-form {
   margin-top: 20px;
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .comment-form h3 {
@@ -339,11 +399,13 @@ export default {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
+  margin-top: 20px;
 }
 
 .btn-primary:hover {
   background-color: #004080;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 .btn-secondary {
@@ -361,6 +423,7 @@ export default {
 .btn-secondary:hover {
   background-color: #999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 .modal {
@@ -441,4 +504,5 @@ export default {
   background-color: #999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 </style>
