@@ -24,20 +24,20 @@
               <option value="우리은행">우리은행</option>
               <option value="신한은행">신한은행</option>
               <option value="하나은행">하나은행</option>
-              <option value="kb국민은행">KB국민은행</option>
-              <option value="ibk기업은행">IBK기업은행</option>
-              <option value="토스뱅크">토스뱅크</option>
-              <option value="농협">농협</option>
-              <option value="수협">수협</option>
+              <option value="국민은행">KB국민은행</option>
+              <option value="중소기업은행">IBK기업은행</option>
+              <option value="토스뱅크 주식회사">토스뱅크</option>
+              <option value="농협은행주식회사">농협</option>
+              <option value="수협은행">수협</option>
               <option value="경남은행">경남은행</option>
               <option value="광주은행">광주은행</option>
               <option value="부산은행">부산은행</option>
               <option value="전북은행">전북은행</option>
               <option value="제주은행">제주은행</option>
-              <option value="카카오뱅크">카카오뱅크</option>
-              <option value="케이뱅크">케이뱅크</option>
-              <option value="스탠다드차타드">한국스탠다드차타드은행</option>
-              <option value="산업은행">한국산업은행</option>
+              <option value="주식회사 카카오뱅크">카카오뱅크</option>
+              <option value="주식회사 케이뱅크">케이뱅크</option>
+              <option value="한국스탠다드차타드은행">한국스탠다드차타드은행</option>
+              <option value="한국산업은행">한국산업은행</option>
             </select>
           </div>
           <button type="submit" class="btn btn-primary">회원가입 완료</button>

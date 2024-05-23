@@ -11,7 +11,8 @@ class DepositProducts(models.Model):
     join_member = models.TextField()
     join_way = models.TextField()
     spcl_cnd = models.TextField()
-
+    age_min = models.IntegerField()
+    age_max = models.IntegerField()
     def __str__(self):
         return self.fin_prdt_nm
 
@@ -37,7 +38,8 @@ class SavingProducts(models.Model):
     join_member = models.TextField()
     join_way = models.TextField()
     spcl_cnd = models.TextField()
-
+    age_min = models.IntegerField()
+    age_max = models.IntegerField()
     def __str__(self):
         return self.fin_prdt_nm
 

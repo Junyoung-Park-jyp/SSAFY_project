@@ -52,7 +52,8 @@
         </div>
         <div class="chatbot-messages">
           <div v-for="(msg, index) in messages" :key="index" :class="{'user-msg': msg.user, 'bot-msg': !msg.user}">
-            <p>{{ msg.text }}</p>
+            <p v-if="msg.user">{{ msg.text }}</p>
+            <p v-else v-html="msg.text"></p>
           </div>
         </div>
         <form @submit.prevent="sendMessage">
@@ -85,32 +86,41 @@ export default {
       this.showChatbot = !this.showChatbot;
     },
     async sendMessage() {
-      const userStore = useUserStore();
-      const userlist = await userStore.getProfile(); // 사용자 프로필을 비동기로 가져옴
-      const userMsg = this.userMessage;
-      this.messages.push({ text: userMsg, user: true });
-      this.userMessage = '';
-      const user = userlist.user_info
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
-          message: userMsg,
-          user: {
-            age: user.age,
-            current_balance: user.current_balance,
-            annual_salary: user.annual_salary,
-            saving_preference: user.saving_preference,
-            favorite_bank: user.favorite_bank
-          }
-        });
-        this.messages.push({ text: response.data.reply, user: false });
-      } catch (error) {
-        console.error('Error sending message:', error);
-        this.messages.push({ text: 'Server error occurred. Please try again later.', user: false });
+  const userStore = useUserStore();
+  // 로그인 상태 확인
+  if (!userStore.isLogin) {
+    // 로그인되지 않은 경우, 메시지 전송하지 않고 종료
+    this.messages.push({ text: '챗봇 서비스를 이용하시려면 로그인해주세요.', user: false });
+    return;
+  }
+
+  const userlist = await userStore.getProfile(); // 사용자 프로필을 비동기로 가져옴
+  const userMsg = this.userMessage;
+  this.messages.push({ text: userMsg, user: true });
+  this.userMessage = '';
+  const user = userlist.user_info;
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
+      message: userMsg,
+      user: {
+        age: user.age,
+        current_balance: user.current_balance,
+        annual_salary: user.annual_salary,
+        bank: user.bank
       }
-    }
+    });
+    const botReply = response.data.reply.replace(/\n/g, '<br>');
+    this.messages.push({ text: botReply, user: false });
+  } catch (error) {
+    console.error('Error sending message:', error);
+    this.messages.push({ text: 'Server error occurred. Please try again later.', user: false });
+  }
+}
+
   }
 };
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
