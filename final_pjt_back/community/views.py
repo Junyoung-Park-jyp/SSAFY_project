@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import status
+from django.http import JsonResponse, Http404
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticatedOrReadOnly])
@@ -95,3 +97,25 @@ def like_comment(request, post_pk, pk):
     else:
         comment.likes.add(request.user)
     return Response({'total_likes': comment.total_likes()}, status=status.HTTP_200_OK)
+
+
+def post_navigation(request, post_id):
+    try:
+        current_post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        raise Http404("Post does not exist")
+
+    try:
+        previous_post = Post.objects.filter(id__lt=current_post.id).order_by('-id').first()
+    except Post.DoesNotExist:
+        previous_post = None
+
+    try:
+        next_post = Post.objects.filter(id__gt=current_post.id).order_by('id').first()
+    except Post.DoesNotExist:
+        next_post = None
+
+    return JsonResponse({
+        'previous': previous_post.id if previous_post else None,
+        'next': next_post.id if next_post else None,
+    })

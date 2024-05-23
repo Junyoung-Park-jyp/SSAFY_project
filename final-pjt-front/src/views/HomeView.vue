@@ -52,7 +52,8 @@
         </div>
         <div class="chatbot-messages">
           <div v-for="(msg, index) in messages" :key="index" :class="{'user-msg': msg.user, 'bot-msg': !msg.user}">
-            <p>{{ msg.text }}</p>
+            <p v-if="msg.user">{{ msg.text }}</p>
+            <p v-else v-html="msg.text"></p>
           </div>
         </div>
         <form @submit.prevent="sendMessage">
@@ -90,7 +91,7 @@ export default {
       const userMsg = this.userMessage;
       this.messages.push({ text: userMsg, user: true });
       this.userMessage = '';
-      const user = userlist.user_info
+      const user = userlist.user_info;
       try {
         const response = await axios.post('http://127.0.0.1:8000/chatbot/', {
           message: userMsg,
@@ -98,11 +99,11 @@ export default {
             age: user.age,
             current_balance: user.current_balance,
             annual_salary: user.annual_salary,
-            saving_preference: user.saving_preference,
-            favorite_bank: user.favorite_bank
+            bank: user.bank
           }
         });
-        this.messages.push({ text: response.data.reply, user: false });
+        const botReply = response.data.reply.replace(/\n/g, '<br>');
+        this.messages.push({ text: botReply, user: false });
       } catch (error) {
         console.error('Error sending message:', error);
         this.messages.push({ text: 'Server error occurred. Please try again later.', user: false });
@@ -111,6 +112,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
@@ -147,11 +149,11 @@ body {
 .slideshow {
   display: flex;
   width: 100%;
-  animation: slide 16s infinite;
+  animation: slide 12s infinite;
 }
 
 .slide {
-  width: 100%;
+  width: 33.333%;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -162,34 +164,23 @@ body {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 15px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slide {
-  0%, 12.5%, 100% {
+  0%, 20%, 100% {
     transform: translateX(0%);
   }
-  12.51%, 25% {
+  20.01%, 40% {
+    transform: translateX(-33.333%);
+  }
+  40.01%, 60% {
+    transform: translateX(-66.666%);
+  }
+  60.01%, 80% {
     transform: translateX(-100%);
   }
-  25.01%, 37.5% {
-    transform: translateX(-200%);
-  }
-  37.51%, 50% {
-    transform: translateX(-300%);
-  }
-  50.01%, 62.5% {
-    transform: translateX(-400%);
-  }
-  62.51%, 75% {
-    transform: translateX(-500%);
-  }
-  75.01%, 87.5% {
-    transform: translateX(-600%);
-  }
-  87.51%, 100% {
-    transform: translateX(-700%);
+  80.01%, 100% {
+    transform: translateX(-133.333%);
   }
 }
 

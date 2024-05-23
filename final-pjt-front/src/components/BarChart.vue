@@ -32,7 +32,7 @@ export default {
         }
 
         chart.value = new Chart(ctx, {
-          type: 'line',
+          type: 'bar',
           data: props.chartData,
           options: {
             responsive: true,
@@ -46,6 +46,14 @@ export default {
               }
             },
             scales: {
+              x: {
+                ticks: {
+                  callback: function(value) {
+                    const label = this.getLabelForValue(value);
+                    return label.length > 10 ? label.match(/.{1,10}/g) : label;
+                  }
+                }
+              },
               y: {
                 beginAtZero: true // Ensure Y-axis starts at 0
               }

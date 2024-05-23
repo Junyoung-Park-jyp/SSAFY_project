@@ -1,33 +1,59 @@
 <template>
-  <div v-if="post" class="container post-detail">
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p>작성자: {{ post.author }} | 작성일: {{ new Date(post.created_at).toLocaleString() }}</p>
-    <button @click="toggleLikePost" class="like-button">
-      <span :class="{ liked: likedByUser }">❤</span>
-      {{ post.total_likes }}
-    </button>
-    <div class="comments-section">
-      <h2>댓글 ({{ post.comments.length }})</h2>
-      <ul>
-        <li v-for="comment in post.comments" :key="comment.id" class="comment">
-          <p>{{ comment.content }}</p>
-          <p>작성자: {{ comment.author }} | 작성일: {{ new Date(comment.created_at).toLocaleString() }}</p>
-          <button v-if="comment.author === user?.username" @click="deleteComment(comment.id)" class="delete-button">삭제</button>
-          <button v-if="comment.author === user?.username" @click="openEditCommentModal(comment)" class="edit-button">수정</button>
-          <button @click="toggleLikeComment(comment)" class="like-button">
-            <span :class="{ liked: comment.likedByUser }">❤</span>
-            {{ comment.total_likes }}
+  <div class="container mt-4 post-detail">
+    <div v-if="post" class="post-content">
+      <div class="post-header">
+        <h1>{{ post.title }}</h1>
+        <div class="post-navigation">
+          <button v-if="previousPost" @click="goToPost(previousPost)" class="nav-button">← 왼쪽 글</button>
+          <button v-if="nextPost" @click="goToPost(nextPost)" class="nav-button">오른쪽 글 →</button>
+        </div>
+      </div>
+      <div class="post-meta">
+        <p>
+          작성자: {{ post.author }}  |  작성일: {{ new Date(post.created_at).toLocaleString() }}  | 
+          <button style="display: inline;" @click="toggleLikePost" class="like-button">
+            <span :class="{ liked: likedByUser }">❤</span>
+            {{ post.total_likes }}
           </button>
-        </li>
-      </ul>
-      <div class="comment-form">
-        <h3>댓글 작성</h3>
-        <textarea v-model="newComment.content" placeholder="댓글을 입력하세요"></textarea>
-        <button @click="addComment">댓글 작성</button>
+          <span v-if="post.author === user?.username" class="post-actions">
+            <button @click="openEditPostModal" class="edit-button">수정</button>
+            <button @click="deletePost" class="delete-button">삭제</button>
+          </span>
+        </p>
+      </div>
+      <h2>{{ post.content }}</h2>
+      <br>
+      <div class="comments-section">
+        <h2>댓글 ({{ post.comments.length }})</h2>
+        <ul>
+          <li v-for="comment in post.comments" :key="comment.id" class="comment">
+            <div class="comment-meta">
+              <p>{{ comment.author }} ({{ new Date(comment.created_at).toLocaleString() }})
+                <button style="display: inline;" @click="toggleLikeComment(comment)" class="like-button2">
+                  <span :class="{ liked: comment.likedByUser }">❤</span>
+                  {{ comment.total_likes }}
+                </button>
+              </p>
+            </div>
+            <p style="font-size: 20px;">{{ comment.content }}</p>
+            <div class="comment-actions">
+              <button v-if="comment.author === user?.username" @click="openEditCommentModal(comment)" class="edit-button">수정</button>
+              <button v-if="comment.author === user?.username" @click="deleteComment(comment.id)" class="delete-button">삭제 </button> 
+            </div>
+          </li>
+        </ul>
+        <br>
+        <div class="comment-form">
+          <h3>댓글 작성</h3>
+          <textarea v-model="newComment.content" placeholder="댓글을 입력하세요"></textarea>
+          <button @click="addComment" class="btn btn-primary">댓글 작성</button>
+          <button @click="goBack" class="btn btn-secondary">뒤로 가기</button>
+        </div>
       </div>
     </div>
-    <button @click="goBack" class="btn btn-secondary">뒤로 가기</button>
+    <div v-else>
+      <p>Loading...</p>
+    </div>
 
     <!-- Edit Comment Modal -->
     <div v-if="isEditCommentModalOpen" class="modal">
@@ -38,21 +64,31 @@
         <button @click="closeEditCommentModal">취소</button>
       </div>
     </div>
-  </div>
-  <div v-else>
-    <p>Loading...</p>
+
+    <!-- Edit Post Modal -->
+    <div v-if="isEditPostModalOpen" class="modal">
+      <div class="modal-content">
+        <h2>게시글 수정</h2>
+        <input v-model="editPostData.title" placeholder="제목을 입력하세요" />
+        <textarea v-model="editPostData.content" placeholder="내용을 입력하세요"></textarea>
+        <button @click="editPost">저장</button>
+        <button @click="closeEditPostModal">취소</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useProductStore } from '@/stores/products';
 import { useUserStore } from '@/stores/users';
 import { useRoute, useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const post = ref(null)
+    const post = ref(null);
+    const previousPost = ref(null);
+    const nextPost = ref(null);
     const newComment = ref({ content: '' });
     const productStore = useProductStore();
     const userStore = useUserStore();
@@ -64,17 +100,22 @@ export default {
     const isEditCommentModalOpen = ref(false);
     const editCommentData = ref({ id: null, content: '' });
 
-    const fetchPost = async () => {
-      const { postId } = route.params;
+    const isEditPostModalOpen = ref(false);
+    const editPostData = ref({ title: '', content: '' });
+
+    const fetchPost = async (postId) => {
       if (userStore.token) {
         user.value = await userStore.getProfile();
         try {
           const response = await productStore.getPostDetail(postId);
           post.value = response;
           likedByUser.value = post.value.likes.includes(user.value.id);
-          post.value.comments.forEach(comment => {
+          post.value.comments.forEach((comment) => {
             comment.likedByUser = comment.likes.includes(user.value.id);
           });
+          const navigation = await productStore.getPostNavigation(postId);
+          previousPost.value = navigation.previous;
+          nextPost.value = navigation.next;
         } catch (error) {
           console.error('Failed to fetch post:', error);
         }
@@ -109,7 +150,7 @@ export default {
       const { postId } = route.params;
       try {
         await productStore.deleteComment(postId, commentId);
-        post.value.comments = post.value.comments.filter(comment => comment.id !== commentId);
+        post.value.comments = post.value.comments.filter((comment) => comment.id !== commentId);
       } catch (error) {
         console.error('Failed to delete comment:', error);
       }
@@ -128,7 +169,7 @@ export default {
       const { postId } = route.params;
       try {
         const response = await productStore.editComment(postId, editCommentData.value.id, editCommentData.value);
-        const comment = post.value.comments.find(c => c.id === editCommentData.value.id);
+        const comment = post.value.comments.find((c) => c.id === editCommentData.value.id);
         comment.content = response.content;
         closeEditCommentModal();
       } catch (error) {
@@ -147,14 +188,57 @@ export default {
       }
     };
 
-    const goBack = () => {
-      router.go(-1);
+    const openEditPostModal = () => {
+      editPostData.value = { title: post.value.title, content: post.value.content };
+      isEditPostModalOpen.value = true;
     };
 
-    onMounted(fetchPost);
+    const closeEditPostModal = () => {
+      isEditPostModalOpen.value = false;
+    };
+
+    const editPost = async () => {
+      const { postId } = route.params;
+      try {
+        const response = await productStore.editPost(postId, editPostData.value);
+        post.value.title = response.title;
+        post.value.content = response.content;
+        closeEditPostModal();
+      } catch (error) {
+        console.error('Failed to edit post:', error);
+      }
+    };
+
+    const deletePost = async () => {
+      const { postId } = route.params;
+      try {
+        await productStore.deletePost(postId);
+        router.push({ name: 'community' });
+      } catch (error) {
+        console.error('Failed to delete post:', error);
+      }
+    };
+
+    const goBack = () => {
+      router.push({ name: 'community' });
+    };
+
+    const goToPost = (postId) => {
+      router.push({ name: 'post', params: { postId } });
+    };
+
+    watch(route, (newRoute) => {
+      fetchPost(newRoute.params.postId);
+    });
+
+    onMounted(() => {
+      fetchPost(route.params.postId);
+    });
 
     return {
       post,
+      previousPost,
+      nextPost,
       newComment,
       user,
       likedByUser,
@@ -168,6 +252,13 @@ export default {
       editComment,
       toggleLikeComment,
       goBack,
+      goToPost,
+      openEditPostModal,
+      closeEditPostModal,
+      isEditPostModalOpen,
+      editPostData,
+      editPost,
+      deletePost,
     };
   },
 };
@@ -199,11 +290,12 @@ body {
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  margin: 20px auto;
   font-family: 'Montserrat', sans-serif;
   color: #333;
   transition: transform 0.3s, box-shadow 0.3s;
   animation: fadeIn 0.5s ease-in-out;
+  width: 100%;
 }
 
 @keyframes fadeIn {
@@ -222,7 +314,13 @@ body {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.post-detail h1 {
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-header h1 {
   font-size: 36px;
   color: #005c99;
   margin-bottom: 20px;
@@ -240,11 +338,38 @@ body {
   }
 }
 
-.post-detail p {
-  font-size: 18px;
+.post-navigation {
+  display: flex;
+  align-items: center;
+}
+
+.nav-button {
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: #004080;
+  transform: translateY(-2px);
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-meta p {
+  font-size: 15px;
   color: #555;
-  margin-bottom: 20px;
-  line-height: 1.6;
+  margin-top: 0;
+  margin-bottom: 40px;
 }
 
 .like-button {
@@ -252,17 +377,30 @@ body {
   border: none;
   cursor: pointer;
   color: #ff4d4d;
-  font-size: 24px;
+  font-size: 17px;
   transition: transform 0.3s ease, color 0.3s ease;
   display: flex;
   align-items: center;
 }
 
-.like-button span {
+.like-button2 {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ff4d4d;
+  font-size: 15px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.like-button span,
+.like-button2 span {
   margin-right: 8px;
 }
 
-.like-button:hover {
+.like-button:hover,
+.like-button2:hover {
   transform: scale(1.2);
   color: #e60000;
 }
@@ -277,8 +415,8 @@ body {
   border: none;
   cursor: pointer;
   color: #005c99;
-  font-size: 16px;
-  margin-left: 10px;
+  font-size: 13px;
+  margin-left: 0px;
   transition: color 0.3s ease;
 }
 
@@ -314,14 +452,15 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.comment p {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 10px;
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.comment-meta {
-  color: #999;
+.comment-meta p {
+  font-size: 14px;
+  color: #333;
   margin-bottom: 10px;
 }
 
@@ -333,7 +472,7 @@ body {
 .comment-actions .like-button,
 .comment-actions .edit-button,
 .comment-actions .delete-button {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .comment-form {
@@ -393,13 +532,14 @@ body {
 .btn-primary {
   display: inline-block;
   padding: 12px 24px;
-  background-color: #005c99;
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
   margin-top: 20px;
+  margin-right: 20px;
 }
 
 .btn-primary:hover {
@@ -411,7 +551,7 @@ body {
 .btn-secondary {
   display: inline-block;
   padding: 12px 24px;
-  background-color: #ccc;
+  background: linear-gradient(135deg, #999, #bbe1fa);
   color: white;
   border: none;
   border-radius: 10px;
@@ -497,12 +637,11 @@ body {
 .modal button:last-of-type {
   background-color: #ccc;
   color: white;
-  margin-left: 10px;
+  margin-left: 0px;
 }
 
 .modal button:last-of-type:hover {
   background-color: #999;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 </style>
