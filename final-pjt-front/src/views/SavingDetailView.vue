@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="option in uniqueOptions" :key="option.save_trm">
-          <td>{{ option.save_trm }}개월 <button @click="addSaving(option)" class="btn" style="color: white; background-color: #004080; ">가입하기</button></td>
+          <td>{{ option.save_trm }}개월 <button v-if="isLogin" @click="addSaving(option)" class="btn" style="color: white; background-color: #004080; ">가입하기</button></td>
           <td>{{ option.intr_rate }}%</td>
         </tr>
       </tbody>
@@ -41,6 +41,9 @@ export default {
     const route = useRoute();
     const productStore = useProductStore();
     const userStore = useUserStore();
+    const isLogin = ref(userStore.isLogin);
+    const updateIsLogin = computed(() => userStore.isLogin);
+    updateIsLogin.value = userStore.isLogin;
     const token = userStore.token
     const savingDetail = ref(null);
     onMounted(() => {
@@ -76,7 +79,7 @@ export default {
       .catch(err => console.log(err))
     }
 
-    return { savingDetail, uniqueOptions, addSaving };
+    return { savingDetail, uniqueOptions, addSaving, isLogin };
   }
 };
 </script>

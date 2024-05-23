@@ -21,14 +21,14 @@ export const useProductStore = defineStore('product', () => {
   const getAuthHeaders = () => {
     return {
       headers: {
-        Authorization: `Token ${token.value}`
+        Authorization: `token ${token.value}`
       }
     };
   };
 
   const getPopularOptions = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/v1/products/popular-options/', getAuthHeaders());
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/products/popular-options/');
       popularOptions.value.mostPopularDepositOption = res.data.most_popular_deposit_option;
       popularOptions.value.mostPopularSavingOption = res.data.most_popular_saving_option;
     } catch (error) {

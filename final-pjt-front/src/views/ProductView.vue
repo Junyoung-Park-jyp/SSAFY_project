@@ -32,12 +32,14 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useProductStore } from '../stores/products';
+import { useUserStore } from '@/stores/users';
 
 const productStore = useProductStore();
+const userStore = useUserStore()
 const popularOptions = productStore.popularOptions;
-
+const isLogin = computed(() => userStore.isLogin);
 onMounted(async () => {
   await productStore.getPopularOptions();
 });
