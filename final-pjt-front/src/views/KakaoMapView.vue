@@ -156,7 +156,7 @@ watch(selectedOption, () => {
 
 .btn-primary {
   padding: 10px 20px;
-  background-color: #002b5c;
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
   color: white;
   border: none;
   border-radius: 5px;

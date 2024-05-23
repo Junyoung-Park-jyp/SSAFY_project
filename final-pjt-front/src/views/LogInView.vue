@@ -112,7 +112,7 @@ export default {
   display: inline-block;
   width: 100%;
   padding: 12px 24px;
-  background-color: #005c99;
+  background: linear-gradient(135deg, #0f4c75, #3282b8, #bbe1fa);
   color: white;
   border: none;
   border-radius: 8px;

@@ -1,4 +1,3 @@
-// products.js
 import axios from 'axios';
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
@@ -21,14 +20,14 @@ export const useProductStore = defineStore('product', () => {
   const getAuthHeaders = () => {
     return {
       headers: {
-        Authorization: `Token ${token.value}`
+        Authorization: `token ${token.value}`
       }
     };
   };
 
   const getPopularOptions = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/v1/products/popular-options/', getAuthHeaders());
+      const res = await axios.get('http://127.0.0.1:8000/api/v1/products/popular-options/');
       popularOptions.value.mostPopularDepositOption = res.data.most_popular_deposit_option;
       popularOptions.value.mostPopularSavingOption = res.data.most_popular_saving_option;
     } catch (error) {
@@ -132,6 +131,35 @@ export const useProductStore = defineStore('product', () => {
     }
   };
 
+  const getPostNavigation = async (postId) => {
+    try {
+      const res = await axios.get(`http://127.0.0.1:8000/api/v1/community/posts/${postId}/navigation/`, getAuthHeaders());
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const editPost = async (postId, postData) => {
+    try {
+      const res = await axios.put(`http://127.0.0.1:8000/api/v1/community/posts/${postId}/`, postData, getAuthHeaders());
+      return res.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  const deletePost = async (postId) => {
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/v1/community/posts/${postId}/`, getAuthHeaders());
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return {
     deposits,
     savings,
@@ -149,6 +177,9 @@ export const useProductStore = defineStore('product', () => {
     getPopularOptions,
     posts,
     token,
-    isLogin
+    isLogin,
+    getPostNavigation,
+    editPost,
+    deletePost
   };
 }, { persist: true });

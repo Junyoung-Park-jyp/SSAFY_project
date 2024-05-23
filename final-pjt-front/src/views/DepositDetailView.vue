@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="option in depositDetail.options" :key="option.save_trm">
-          <td>{{ option.save_trm }}개월 <button @click="addDeposit(option.id)" class="btn" style="color: white; background-color: #004080;">가입하기</button></td>
+          <td>{{ option.save_trm }}개월 <button v-if="isLogin" @click="addDeposit(option.id)" class="btn" style="color: white; background-color: #004080;">가입하기</button></td>
           <td>{{ option.intr_rate }}%</td>
         </tr>
       </tbody>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useProductStore } from '@/stores/products';
 import { useUserStore } from '@/stores/users';
@@ -40,9 +40,13 @@ export default {
     const route = useRoute();
     const productStore = useProductStore();
     const userStore = useUserStore();
+    const isLogin = ref(userStore.isLogin);
+    const updateIsLogin = computed(() => userStore.isLogin);
+    updateIsLogin.value = userStore.isLogin;
     const token = userStore.token
     const depositDetail = ref(null);
     onMounted(() => {
+      console.log(isLogin.value)
       const id = route.params.id;
       depositDetail.value = productStore.deposits.find(deposit => deposit.id === Number(id));
     });
@@ -62,7 +66,7 @@ export default {
       })
       .catch(err => console.log(err))
     }
-    return { depositDetail, addDeposit };
+    return { depositDetail, addDeposit, isLogin };
   }
 };
 </script>

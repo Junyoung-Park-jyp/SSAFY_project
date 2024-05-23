@@ -17,6 +17,7 @@ import UserInfoView from '../views/UserInfoView.vue';
 import PostDetailView from '../views/PostDetailView.vue';
 import KakaoMapView from '../views/KakaoMapView.vue';
 import ChatbotView from '../views/ChatbotView.vue'; // 추가된 부분
+import BankClerkView from '../views/BankClerkView.vue'; // 추가된 부분
 import { useUserStore } from '@/stores/users';
 import { useProductStore } from '@/stores/products';
 
@@ -121,6 +122,11 @@ const routes = [
     path: '/chatbot',
     name: 'chatbot',
     component: ChatbotView
+  },
+  {
+    path: '/bankclerk',
+    name: 'bankclerk',
+    component: BankClerkView
   }
 ];
 
