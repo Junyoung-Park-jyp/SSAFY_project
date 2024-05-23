@@ -1,12 +1,17 @@
 from rest_framework import serializers
-from products.models import SavingProducts, DepositProducts
+from .models import SavingProduct, DepositProduct, Portfolio
 
 class SavingProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SavingProducts
+        model = SavingProduct
         fields = '__all__'
 
 class DepositProductSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DepositProducts
+        model = DepositProduct
+        fields = '__all__'
+
+class PortfolioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Portfolio
         fields = '__all__'

@@ -23,3 +23,4 @@ class UserInfo(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['username'], name='unique_username')
         ]
+

@@ -10,7 +10,10 @@
         <label for="content" class="form-label">내용:</label>
         <textarea v-model="content" id="content" class="form-control"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">작성하기</button>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">작성하기</button>
+        <router-link to="/community" class="btn btn-secondary">뒤로가기</router-link>
+      </div>
     </form>
   </div>
 </template>
@@ -45,14 +48,44 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin-top: 5%;
+  background: linear-gradient(to right, #e0eafc, #cfdef3);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
 .create-post {
   background: linear-gradient(to right, #ffffff, #e6f7ff);
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 600px;
+  width: 100%;
   transition: transform 0.3s, box-shadow 0.3s;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .create-post:hover {
@@ -85,7 +118,7 @@ h1 {
 }
 
 .form-control {
-  padding: 10px;
+  padding: 15px;
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 16px;
@@ -97,18 +130,55 @@ h1 {
   box-shadow: 0 0 10px rgba(0, 92, 153, 0.2);
 }
 
-.btn-primary {
+.btn {
   padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.btn-primary {
   background-color: #005c99;
   color: white;
   border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  margin-right: 10px;
 }
 
 .btn-primary:hover {
   background-color: #004080;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
+.btn-primary:active {
+  background-color: #003366;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  background-color: #cccccc;
+  color: #333;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #999999;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+}
+
+.btn-secondary:active {
+  background-color: #666666;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>

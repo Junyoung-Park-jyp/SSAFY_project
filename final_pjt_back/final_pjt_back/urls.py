@@ -10,5 +10,5 @@ urlpatterns = [
     path('api/v1/banks/', include('banks.urls')),
     path('accounts/', include('dj_rest_auth.urls')),
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
-    path('api/v1/chatbot/', include('chatbot.urls')),  # 추가된 부분
+    path('chatbot/', include('chatbot.urls')),  # 추가된 부분
 ]

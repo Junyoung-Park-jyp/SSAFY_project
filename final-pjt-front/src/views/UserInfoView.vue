@@ -78,7 +78,7 @@ const UserInfo = function(){
 export default {
   name: 'UserInfo',
   beforeRouteLeave(to, from, next) {
-    const confirmMessage = "상세 정보를 입력하지 않으면 추천이 제대로 이루어지지 않을 수 있습니다. 그래도 입력을 취소하시겠습니까?";
+    const confirmMessage = "상세 정보를 입력하지 않으면 추천이 제대로 이루어지지 않을 수 있습니다.";
     if (this.isSubmitting) {
       next(); // Form is being submitted, allow navigation
     } else if (window.confirm(confirmMessage)) {

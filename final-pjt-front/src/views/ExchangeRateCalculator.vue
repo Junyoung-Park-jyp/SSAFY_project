@@ -86,28 +86,70 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 .exchange-rate {
-  background: #f4f7f6;
+  background: linear-gradient(to bottom right, #ffffff, #e6f7ff);
   padding: 60px 40px;
   border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   margin: 40px auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   max-width: 800px;
   color: #333;
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.exchange-rate:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
-  color: #002b5c;
+  color: #005c99;
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 30px;
   text-align: center;
   text-transform: uppercase;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .form-group {
   margin-bottom: 30px;
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-label {
@@ -115,6 +157,7 @@ h1 {
   font-weight: bold;
   margin-bottom: 10px;
   font-size: 18px;
+  color: #005c99;
 }
 
 .form-control {
@@ -128,7 +171,7 @@ h1 {
 
 .form-control:focus {
   border-color: #005c99;
-  box-shadow: 0 0 10px rgba(0, 92, 153, 0.5);
+  box-shadow: 0 0 15px rgba(0, 92, 153, 0.5);
 }
 
 .result-group {
@@ -139,6 +182,12 @@ h1 {
   margin-top: 20px;
   font-size: 18px;
   color: #002b5c;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.result-group:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .alert {
@@ -152,5 +201,19 @@ h1 {
 
 .alert-danger {
   background-color: #d9534f;
+  animation: shake 0.5s ease;
 }
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-10px);
+  }
+  40%, 80% {
+    transform: translateX(10px);
+  }
+}
+
 </style>
